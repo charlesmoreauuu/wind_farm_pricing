@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wind Farm Materials Pricing · ACCRAR · Group 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:        #0b0f14;
+    --surface:   #111722;
+    --surface2:  #18202d;
+    --surface3:  #1f2a3a;
+    --border:    #2a3447;
+    --border2:   #3d4f6a;
+    --accent:    #00d4aa;
+    --accent-dim:#007a63;
+    --accent-bg: rgba(0,212,170,0.06);
+    --accent-bg2:rgba(0,212,170,0.12);
+    --text:      #dce8f5;
+    --text2:     #8fa0b8;
+    --text3:     #4d6080;
+    --danger:    #f25c5c;
+    --success:   #3ecf8e;
+    --warning:   #f5a623;
+    --mono:      'IBM Plex Mono', monospace;
+    --sans:      'DM Sans', sans-serif;
+    --rad:       8px;
+    --rad2:      12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo-mark {
+    width: 38px; height: 38px;
+    border: 1.5px solid var(--accent);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 13px; font-weight: 500;
+    flex-shrink: 0;
+  }
+  .header-title { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; }
+  .header-sub   { font-size: 12px; color: var(--text2); margin-top: 1px; font-family: var(--mono); }
+  .header-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-dim);
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── LAYOUT ── */
+  .main { padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
+
+  /* ── STAT CARDS ── */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--rad2);
+    padding: 16px 18px;
+    transition: border-color 0.2s;
+  }
+  .stat-card.highlight {
+    border-color: var(--accent-dim);
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(0,122,99,0.15) 100%);
+  }
+  .stat-label {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .stat-label svg { flex-shrink: 0; }
+  .stat-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    font-family: var(--mono);
+    letter-spacing: -0.5px;
+  }
+  .stat-card.highlight .stat-value { color: var(--accent); }
+
+  /* ── TWO-COLUMN GRID ── */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+  /* ── PANEL ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--rad2);
+    overflow: hidden;
+  }
+  .panel-head {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .panel-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+    letter-spacing: -0.1px;
+  }
+  .panel-title svg { color: var(--accent); }
+  .panel-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 8px; border-radius: 20px;
+  }
+  .panel-body { padding: 14px; }
+
+  /* ── SEARCH & FILTERS ── */
+  .search-wrap { position: relative; margin-bottom: 10px; }
+  .search-wrap svg {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--text3); pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border2);
+    border-radius: var(--rad);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 9px 12px 9px 34px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .search-input::placeholder { color: var(--text3); }
+  .search-input:focus { border-color: var(--accent); background: var(--surface3); }
+
+  .filter-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .chip {
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .chip:hover  { border-color: var(--border2); color: var(--text); }
+  .chip.active { border-color: var(--accent); background: var(--accent-bg2); color: var(--accent); }
+
+  /* ── CATALOGUE ITEMS ── */
+  .catalogue-list { max-height: 450px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; }
+  .catalogue-list::-webkit-scrollbar { width: 4px; }
+  .catalogue-list::-webkit-scrollbar-track { background: transparent; }
+  .catalogue-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .mat-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--rad);
+    padding: 11px 13px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .mat-card:hover { border-color: var(--border2); background: var(--surface3); }
+  .mat-info { flex: 1; min-width: 0; }
+  .mat-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; margin-bottom: 2px; }
+  .mat-cat  { font-size: 10px; font-family: var(--mono); color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .mat-desc { font-size: 11px; color: var(--text2); line-height: 1.4; }
+  .mat-right { flex-shrink: 0; text-align: right; }
+  .mat-price { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; margin-bottom: 6px; }
+  .mat-price span { font-size: 10px; color: var(--text2); }
+
+  .add-btn {
+    background: var(--accent-bg2);
+    border: 1px solid var(--accent-dim);
+    color: var(--accent);
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 4px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .add-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* ── MTO LIST ── */
+  .mto-list { max-height: 450px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
+  .mto-list::-webkit-scrollbar { width: 4px; }
+  .mto-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .empty-state {
+    border: 1.5px dashed var(--border);
+    border-radius: var(--rad2);
+    padding: 40px 20px;
+    text-align: center;
+  }
+  .empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.3; }
+  .empty-text { font-size: 13px; color: var(--text2); }
+
+  /* ── MTO ROW ── */
+  .mto-row {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--rad2);
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .mto-row:focus-within { border-color: var(--border2); }
+
+  .mto-row-head {
+    padding: 10px 13px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mto-row-name { font-size: 12px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.3; }
+  .mto-row-total { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; flex-shrink: 0; }
+
+  .mto-row-inputs {
+    padding: 0 13px 11px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+
+  /* ── THE KEY PIECE: CLEAR INPUTS ── */
+  .input-group { display: flex; flex-direction: column; gap: 3px; }
+  .input-label {
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  input[type="number"], input[type="text"], select {
+    background: var(--bg);
+    border: 1.5px solid var(--border2);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  input:focus, select:focus {
+    border-color: var(--accent);
+    background: #0b1a16;
+    box-shadow: 0 0 0 3px rgba(0,212,170,0.10);
+  }
+  input::placeholder { color: var(--text3); font-weight: 400; }
+
+  select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234d6080' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 26px;
+  }
+  select option { background: var(--surface2); color: var(--text); }
+
+  .qty-input   { width: 80px; text-align: right; }
+  .price-input { width: 90px; text-align: right; }
+  .unit-select { width: 70px; }
+  .desc-input  { flex: 1; min-width: 120px; font-family: var(--sans); font-size: 12px; font-weight: 400; }
+
+  .mto-divider { display: flex; align-items: center; gap: 6px; padding: 0 13px 3px; }
+  .mto-divider span { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+
+  .mto-row-btns { display: flex; gap: 4px; flex-shrink: 0; }
+  .icon-btn {
+    width: 28px; height: 28px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text2);
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .icon-btn:hover { background: var(--surface3); border-color: var(--border); color: var(--text); }
+  .icon-btn.danger:hover { background: rgba(242,92,92,0.1); border-color: rgba(242,92,92,0.3); color: var(--danger); }
+
+  /* ── EXPANDED NOTES ── */
+  .mto-expand {
+    border-top: 1px solid var(--border);
+    padding: 10px 13px;
+    background: var(--surface);
+    display: none;
+    flex-direction: column; gap: 8px;
+  }
+  .mto-expand.open { display: flex; }
+  .mto-source { font-size: 10px; font-family: var(--mono); color: var(--text3); line-height: 1.6; }
+  .mto-source strong { color: var(--text2); }
+
+  /* ── TOTALS ── */
+  .totals-panel {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--rad2);
+    margin-top: 12px;
+    overflow: hidden;
+  }
+  .totals-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .totals-row:last-child { border-bottom: none; }
+  .totals-row.grand {
+    background: linear-gradient(90deg, var(--accent-bg) 0%, transparent 100%);
+    border-top: 1px solid var(--accent-dim);
+    border-bottom: none;
+  }
+  .totals-label {
+    font-size: 12px; color: var(--text2);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .totals-value { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
+  .totals-row.grand .totals-label { color: var(--accent); font-weight: 500; font-size: 13px; }
+  .totals-row.grand .totals-value { color: var(--accent); font-size: 18px; }
+
+  .pct-input {
+    width: 48px !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+    display: inline-block !important;
+    vertical-align: middle;
+  }
+
+  /* ── ACTION BUTTONS ── */
+  .actions { display: flex; gap: 10px; margin-top: 14px; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--rad);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 9px 18px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    letter-spacing: 0.3px;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid rgba(242,92,92,0.25);
+    border-radius: var(--rad);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 9px 18px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    transition: all 0.15s;
+  }
+  .btn-ghost:hover { background: rgba(242,92,92,0.08); border-color: var(--danger); }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 18px 32px;
+    margin-top: 32px;
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text3);
+    line-height: 1.8;
+  }
+  .footer strong { color: var(--text2); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; top: 20px; right: 20px; z-index: 9999;
+    background: var(--surface2);
+    border: 1px solid var(--accent-dim);
+    color: var(--accent);
+    border-radius: var(--rad);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    display: flex; align-items: center; gap: 8px;
+    opacity: 0; pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .toast.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+  /* ── CATEGORY COLOUR DOT ── */
+  .cat-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+
+  /* ── NO RESULTS ── */
+  .no-results { padding: 20px; text-align: center; color: var(--text2); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo-mark">WF</div>
+    <div>
+      <div class="header-title">Wind Farm Materials Pricing Tool</div>
+      <div class="header-sub">ACCRAR · 50 × 14 MW WTG · MP-TP Foundations · North Sea</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="header-badge">CIVE60001 · GROUP 3</span>
+    <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">Q1 2026 Prices</span>
+  </div>
+</header>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg"></span>
+</div>
+
+<main class="main">
+
+  <!-- STAT CARDS -->
+  <div class="stats" id="stats">
+    <div class="stat-card">
+      <div class="stat-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        MTO items
+      </div>
+      <div class="stat-value" id="stat-count">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        Materials subtotal
+      </div>
+      <div class="stat-value" id="stat-sub">£0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Offshore + contingency
+      </div>
+      <div class="stat-value" id="stat-add">£0</div>
+    </div>
+    <div class="stat-card highlight">
+      <div class="stat-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Total estimate
+      </div>
+      <div class="stat-value" id="stat-total">£0</div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid">
+
+    <!-- LEFT: CATALOGUE -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+          Material catalogue
+        </div>
+        <span class="panel-count" id="cat-count">19 materials</span>
+      </div>
+      <div class="panel-body">
+        <div class="search-wrap">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="search-input" type="text" id="search" placeholder="Search materials, categories…" oninput="renderCatalogue()"/>
+        </div>
+        <div class="filter-chips" id="chips"></div>
+        <div class="catalogue-list" id="catalogue-list"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: MTO -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          Material take-off (MTO)
+        </div>
+        <span class="panel-count" id="mto-count-badge">0 items</span>
+      </div>
+      <div class="panel-body">
+        <div id="mto-content">
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-text">Add materials from the catalogue<br>to build your MTO list</div>
+          </div>
+        </div>
+
+        <!-- TOTALS -->
+        <div class="totals-panel" id="totals-panel" style="display:none">
+          <div class="totals-row">
+            <span class="totals-label">Materials subtotal</span>
+            <span class="totals-value" id="t-sub">£0</span>
+          </div>
+          <div class="totals-row">
+            <span class="totals-label">
+              Offshore uplift
+              <input type="number" class="pct-input" id="pct-offshore" value="25" min="0" max="200" oninput="recalc()"/>
+              <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">%</span>
+            </span>
+            <span class="totals-value" id="t-offshore">£0</span>
+          </div>
+          <div class="totals-row">
+            <span class="totals-label">
+              Contingency
+              <input type="number" class="pct-input" id="pct-cont" value="15" min="0" max="100" oninput="recalc()"/>
+              <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">%</span>
+            </span>
+            <span class="totals-value" id="t-cont">£0</span>
+          </div>
+          <div class="totals-row grand">
+            <span class="totals-label">Total estimate</span>
+            <span class="totals-value" id="t-total">£0</span>
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="actions" id="actions" style="display:none">
+          <button class="btn-primary" onclick="exportCSV()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export MTO as CSV
+          </button>
+          <button class="btn-ghost" onclick="clearMTO()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            Clear MTO
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end grid -->
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <strong>Price basis:</strong> UK market Q4 2025 / Q1 2026 ·
+  S355 structural steel £1,700–2,000/t (Mixdesigncalc / British Steel Nov 2025) ·
+  UHS grout from FoundOcean / Ducorit / Nautec ·
+  Cathodic protection from MME Group &amp; Cathodic Marine Engineering ·
+  Marine coatings from Jotun / Hempel offshore schedules ·
+  Subsea cable from Nexans / Prysmian ·
+  Rock armour from UK quarry supply ·
+  <strong>Offshore uplift</strong> covers mobilisation, marine logistics &amp; installation mark-up ·
+  Prices are indicative — obtain supplier quotes for final estimates ·
+  CBAM regulations may add £80–200/t to imported steel in 2026
+</footer>
+
+<script>
+const CATALOG = [
+  {id:"s355_plate",  cat:"Structural Steel",         name:"Structural Steel Plate S355",       desc:"EN10025 S355J2+N. Monopile & jacket repairs, primary structure.",         unit:"t",   price:1850, src:"Mixdesigncalc / British Steel (Q1 2026)",            notes:"Fabrication +£400–800/t extra. CBAM uplift expected mid-2026."},
+  {id:"s355_sec",    cat:"Structural Steel",         name:"Structural Steel Sections S355",    desc:"UB/UC/RHS. Secondary structure, work platforms, bracing.",                unit:"t",   price:1700, src:"Mixdesigncalc / British Steel (Q1 2026)",            notes:"Universal beams, columns, hollow sections."},
+  {id:"s460",        cat:"Structural Steel",         name:"High-Strength Steel Plate S460",    desc:"EN10025-6 S460. Use where S355 utilisation ratios exceed limits.",        unit:"t",   price:2400, src:"Industry estimate (S355 + ~30% premium)",            notes:"High-stress, critical repair sections."},
+  {id:"ss316",       cat:"Structural Steel",         name:"Stainless Steel 316L",              desc:"Marine-grade austenitic. Boat landings, ladders, railings.",              unit:"t",   price:4200, src:"UK supplier estimate 2025–2026",                    notes:"EN10088. Splash zone secondary components."},
+  {id:"fab_sec",     cat:"Fabricated Components",   name:"Fabricated Secondary Steel",        desc:"Work platforms, boat landings, J-tubes, ladders — supplied fabricated.",  unit:"t",   price:3800, src:"Offshore secondary steel market rate (2025)",        notes:"Includes raw material + fabrication. Offshore coating extra."},
+  {id:"grout_clamp", cat:"Fabricated Components",   name:"Grouted Repair Clamp",              desc:"Split-sleeve clamp for tubular member repair. Subsea installation.",       unit:"nr",  price:45000,src:"TSC Subsea / IK Subsea estimate (2025)",             notes:"Highly dependent on member OD. Assumes 1.5–2.5 m OD."},
+  {id:"uhs_grout",   cat:"Grouting Materials",      name:"Ultra-High Strength Grout (UHS)",   desc:"≥120 MPa 28-day strength. TP-monopile connections, repair clamps.",       unit:"t",   price:1600, src:"FoundOcean / Ducorit / Nautec (2025)",               notes:"Ducorit D52 or equivalent. Material supply only."},
+  {id:"opc_grout",   cat:"Grouting Materials",      name:"OPC Grout",                         desc:"Ordinary Portland Cement grout. Pile-sleeve connections, void filling.",  unit:"t",   price:420,  src:"UK cement market (2025–2026)",                       notes:"Mix ratio W/C ~0.4. Subsea placement by pump spread."},
+  {id:"zinc_anode",  cat:"Cathodic Protection",     name:"Sacrificial Zinc Anodes",           desc:"99.9% Zn, ASTM B-6. Seawater cathodic protection for steel foundations.",unit:"kg",  price:4.80, src:"MME Group / industry pricing (2025)",                notes:"Bracelet or flush-mounted offshore type. DNV/Lloyd's certified."},
+  {id:"al_anode",    cat:"Cathodic Protection",     name:"Sacrificial Aluminium Anodes",      desc:"Al-Zn-In alloy, ASTM B-521. Higher capacity than zinc for subsea.",       unit:"kg",  price:5.50, src:"MME Group / Cathodic Marine Engineering (2025)",     notes:"Preferred for deepwater. Lighter per amp-hour than zinc."},
+  {id:"epoxy",       cat:"Coatings",                name:"Marine Epoxy Coating System",       desc:"3-coat system: primer + build + topcoat. Splash zone & tidal exposure.",  unit:"m²",  price:32,   src:"Jotun / Hempel offshore systems (2025)",             notes:"Material cost only. Application/access vessel extra."},
+  {id:"antifoul",    cat:"Coatings",                name:"Subsea Antifouling Coating",        desc:"Immersion zone coating incl. antifouling. Reduces hydrodynamic loads.",   unit:"m²",  price:22,   src:"Jotun / Hempel offshore pricing (2025)",             notes:"Material only. Inhibits marine growth build-up."},
+  {id:"rock",        cat:"Scour Protection",        name:"Rock Armour / Filter Stone",        desc:"Crushed granite/basalt 10–300 kg. Scour hole infill and protection.",     unit:"t",   price:38,   src:"UK quarry supply / offshore market (2025)",          notes:"Grading as per DNV-RP-C205. Larger scour = more volume."},
+  {id:"frond_mat",   cat:"Scour Protection",        name:"Concrete Frond Mat",                desc:"Pre-fabricated concrete frond mattress for seabed stabilisation.",        unit:"m²",  price:85,   src:"SubSea Protection Systems / estimate (2025)",        notes:"ROV or barge installation. Better for sensitive seabed."},
+  {id:"cable",       cat:"Cables",                  name:"Inter-Array Subsea Cable (33 kV)",  desc:"33 kV XLPE-insulated armoured subsea cable. WTG to offshore substation.",  unit:"m",   price:280,  src:"Nexans / Prysmian offshore (2025)",                  notes:"Supply only. Burial, J-tube installation costs extra."},
+  {id:"bolt_m36",    cat:"Fasteners",               name:"High-Strength Bolts M36 Gr10.9",   desc:"HDG or stainless M36 structural bolts with nut & washer set.",             unit:"nr",  price:14,   src:"Bulten / Nord-Lock UK (2025)",                       notes:"ISO 4014/4032. Use stainless for splash zone."},
+  {id:"bolt_m48",    cat:"Fasteners",               name:"High-Strength Bolts M48 Gr10.9",   desc:"M48 flange bolts. Primary structural connections, monopile flanges.",      unit:"nr",  price:38,   src:"Nord-Lock UK (2025)",                                notes:"Critical flanges. Calibrated torquing required offshore."},
+  {id:"weld_wire",   cat:"Fabrication Consumables", name:"Welding Wire / Consumables",        desc:"MIG/MAG flux-cored wire & electrodes. Offshore structural welding.",       unit:"kg",  price:6,    src:"Lincoln Electric / ESAB UK (2025)",                  notes:"DNV-certified consumables. ~5–10 kg per structural joint."},
+  {id:"concrete",    cat:"Concrete",                name:"Marine Concrete C40/50",            desc:"High-durability marine mix. Gravity base, J-tube sealing.",               unit:"m³",  price:280,  src:"UK ready-mix market (2025–2026)",                    notes:"CEM III/A with FA/GGBS blend for XS marine exposure class."}
+];
+
+const CAT_COLOURS = {
+  "Structural Steel":         "#4ea8de",
+  "Fabricated Components":    "#c084fc",
+  "Grouting Materials":       "#fb923c",
+  "Cathodic Protection":      "#34d399",
+  "Coatings":                 "#f472b6",
+  "Scour Protection":         "#a3e635",
+  "Cables":                   "#fbbf24",
+  "Fasteners":                "#94a3b8",
+  "Fabrication Consumables":  "#e879f9",
+  "Concrete":                 "#60a5fa"
+};
+
+const UNITS = ["t","kg","m","m²","m³","nr","LS"];
+
+let mto = [];
+let rowId = 0;
+let toastTimer = null;
+let activeCategory = "All";
+
+// ── INIT ──
+const cats = ["All", ...Object.keys(CAT_COLOURS)];
+const chipsEl = document.getElementById("chips");
+cats.forEach(c => {
+  const b = document.createElement("button");
+  b.className = "chip" + (c === "All" ? " active" : "");
+  b.textContent = c;
+  b.onclick = () => { activeCategory = c; document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active")); b.classList.add("active"); renderCatalogue(); };
+  chipsEl.appendChild(b);
+});
+
+renderCatalogue();
+
+function renderCatalogue() {
+  const q = document.getElementById("search").value.toLowerCase();
+  const filtered = CATALOG.filter(m => {
+    const matchQ = !q || m.name.toLowerCase().includes(q) || m.cat.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q);
+    const matchC = activeCategory === "All" || m.cat === activeCategory;
+    return matchQ && matchC;
+  });
+  document.getElementById("cat-count").textContent = filtered.length + " material" + (filtered.length===1?"":"s");
+  const list = document.getElementById("catalogue-list");
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="no-results">No materials match your search.</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(m => `
+    <div class="mat-card" onclick="addToMTO('${m.id}')">
+      <div class="cat-dot" style="background:${CAT_COLOURS[m.cat]||'#8fa0b8'}"></div>
+      <div class="mat-info">
+        <div class="mat-name">${m.name}</div>
+        <div class="mat-cat">${m.cat}</div>
+        <div class="mat-desc">${m.desc}</div>
+      </div>
+      <div class="mat-right">
+        <div class="mat-price">£${fmtPrice(m.price)}<span>/${m.unit}</span></div>
+        <button class="add-btn" onclick="event.stopPropagation();addToMTO('${m.id}')">+ Add</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function fmtPrice(n) {
+  if (n < 100) return n.toFixed(2);
+  return Number(n).toLocaleString("en-GB", {maximumFractionDigits:0});
+}
+
+function fmt(n) {
+  return "£" + Number(n).toLocaleString("en-GB", {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+
+function addToMTO(id) {
+  const m = CATALOG.find(x => x.id === id);
+  if (!m) return;
+  const rid = ++rowId;
+  mto.push({ rid, id:m.id, name:m.name, unit:m.unit, price:m.price, qty:1, desc:"", src:m.src, notes:m.notes, cat:m.cat });
+  renderMTO();
+  toast("Added: " + (m.name.length > 40 ? m.name.slice(0,40)+"…" : m.name));
+}
+
+function removeRow(rid) {
+  mto = mto.filter(r => r.rid !== rid);
+  renderMTO();
+}
+
+function toggleExpand(rid) {
+  const el = document.getElementById("expand-" + rid);
+  el.classList.toggle("open");
+}
+
+function updateField(rid, field, val) {
+  const row = mto.find(r => r.rid === rid);
+  if (!row) return;
+  row[field] = field === "qty" || field === "price" ? parseFloat(val) || 0 : val;
+  // update line total label
+  const lt = (row.qty||0) * (row.price||0);
+  const el = document.getElementById("lt-" + rid);
+  if (el) el.textContent = fmt(lt);
+  recalc();
+}
+
+function renderMTO() {
+  const content = document.getElementById("mto-content");
+  document.getElementById("mto-count-badge").textContent = mto.length + " item" + (mto.length===1?"":"s");
+
+  if (mto.length === 0) {
+    content.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">Add materials from the catalogue<br>to build your MTO list</div></div>`;
+    document.getElementById("totals-panel").style.display = "none";
+    document.getElementById("actions").style.display = "none";
+    recalc();
+    return;
+  }
+
+  const listHtml = mto.map(row => {
+    const lt = (row.qty||0) * (row.price||0);
+    const unitOpts = UNITS.map(u => `<option value="${u}" ${u===row.unit?"selected":""}>${u}</option>`).join("");
+    return `
+    <div class="mto-row" id="row-${row.rid}">
+      <div class="mto-row-head">
+        <div style="width:7px;height:7px;border-radius:50%;background:${CAT_COLOURS[row.cat]||'#8fa0b8'};flex-shrink:0;margin-top:2px"></div>
+        <div class="mto-row-name">${row.name}</div>
+        <div class="mto-row-total" id="lt-${row.rid}">${fmt(lt)}</div>
+        <div class="mto-row-btns">
+          <button class="icon-btn" onclick="toggleExpand(${row.rid})" title="Notes / source">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </button>
+          <button class="icon-btn danger" onclick="removeRow(${row.rid})" title="Remove">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="mto-row-inputs">
+        <div class="input-group">
+          <span class="input-label">Quantity</span>
+          <input type="number" class="qty-input" value="${row.qty}" min="0" step="any"
+            oninput="updateField(${row.rid},'qty',this.value)" placeholder="0"/>
+        </div>
+        <div class="input-group">
+          <span class="input-label">Unit</span>
+          <select class="unit-select" onchange="updateField(${row.rid},'unit',this.value)">${unitOpts}</select>
+        </div>
+        <div class="input-group">
+          <span class="input-label">Unit price (£)</span>
+          <input type="number" class="price-input" value="${row.price}" min="0" step="any"
+            oninput="updateField(${row.rid},'price',this.value)" placeholder="0.00"/>
+        </div>
+        <div class="input-group" style="flex:1;min-width:100px">
+          <span class="input-label">Description / scope note</span>
+          <input type="text" class="desc-input" value="${row.desc}" placeholder="Add scope note…"
+            oninput="updateField(${row.rid},'desc',this.value)"/>
+        </div>
+      </div>
+      <div class="mto-expand" id="expand-${row.rid}">
+        <div class="mto-source"><strong>Source:</strong> ${row.src}</div>
+        ${row.notes ? `<div class="mto-source"><strong>Notes:</strong> ${row.notes}</div>` : ""}
+      </div>
+    </div>`;
+  }).join("");
+
+  content.innerHTML = `<div class="mto-list">${listHtml}</div>`;
+  document.getElementById("totals-panel").style.display = "block";
+  document.getElementById("actions").style.display = "flex";
+  recalc();
+}
+
+function recalc() {
+  const sub  = mto.reduce((s,r)=> s + (r.qty||0)*(r.price||0), 0);
+  const ofPct = parseFloat(document.getElementById("pct-offshore")?.value||25) / 100;
+  const coPct = parseFloat(document.getElementById("pct-cont")?.value||15) / 100;
+  const oa   = sub * ofPct;
+  const ca   = (sub + oa) * coPct;
+  const tot  = sub + oa + ca;
+
+  setText("stat-count", mto.length);
+  setText("stat-sub",   fmt(sub));
+  setText("stat-add",   fmt(oa + ca));
+  setText("stat-total", fmt(tot));
+  setText("t-sub",      fmt(sub));
+  setText("t-offshore", fmt(oa));
+  setText("t-cont",     fmt(ca));
+  setText("t-total",    fmt(tot));
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function clearMTO() {
+  if (mto.length === 0) return;
+  if (confirm("Clear all MTO items?")) { mto = []; renderMTO(); }
+}
+
+function exportCSV() {
+  const sub  = mto.reduce((s,r)=> s + (r.qty||0)*(r.price||0), 0);
+  const ofPct = parseFloat(document.getElementById("pct-offshore").value||25)/100;
+  const coPct = parseFloat(document.getElementById("pct-cont").value||15)/100;
+  const oa   = sub * ofPct;
+  const ca   = (sub + oa) * coPct;
+  const tot  = sub + oa + ca;
+
+  const hdr  = ["Item","Category","Scope Note","Quantity","Unit","Unit Price (GBP)","Line Total (GBP)","Source"].join(",");
+  const rows = mto.map(r => [
+    `"${r.name}"`, `"${r.cat}"`, `"${r.desc||''}"`,
+    r.qty, r.unit, r.price,
+    ((r.qty||0)*(r.price||0)).toFixed(2),
+    `"${r.src}"`
+  ].join(","));
+  const footer = [
+    `,,,,,,`,
+    `"Subtotal (Materials)",,,,,,${sub.toFixed(2)}`,
+    `"Offshore Uplift (${Math.round(ofPct*100)}%)",,,,,,${oa.toFixed(2)}`,
+    `"Contingency (${Math.round(coPct*100)}%)",,,,,,${ca.toFixed(2)}`,
+    `"TOTAL ESTIMATE",,,,,,${tot.toFixed(2)}`
+  ];
+  const csv  = [hdr, ...rows, ...footer].join("\n");
+  const blob = new Blob([csv], {type:"text/csv"});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href = url; a.download = "ACCRAR_MTO_Pricing.csv"; a.click();
+  URL.revokeObjectURL(url);
+  toast("CSV exported successfully");
+}
+
+function toast(msg) {
+  const el = document.getElementById("toast");
+  document.getElementById("toast-msg").textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
+}
+</script>
+</body>
+</html>
