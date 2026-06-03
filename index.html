@@ -1,854 +1,1245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Wind Farm Materials Pricing · ACCRAR · Group 3</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACCRAR Life Extension. Is fixing it cheaper than building new?</title>
 <style>
   :root {
-    --bg:        #0b0f14;
-    --surface:   #111722;
-    --surface2:  #18202d;
-    --surface3:  #1f2a3a;
-    --border:    #2a3447;
-    --border2:   #3d4f6a;
-    --accent:    #00d4aa;
-    --accent-dim:#007a63;
-    --accent-bg: rgba(0,212,170,0.06);
-    --accent-bg2:rgba(0,212,170,0.12);
-    --text:      #dce8f5;
-    --text2:     #8fa0b8;
-    --text3:     #4d6080;
-    --danger:    #f25c5c;
-    --success:   #3ecf8e;
-    --warning:   #f5a623;
-    --mono:      'IBM Plex Mono', monospace;
-    --sans:      'DM Sans', sans-serif;
-    --rad:       8px;
-    --rad2:      12px;
+    --bg: #FAF9F6;
+    --panel: #FFFFFF;
+    --ink: #2C3E50;
+    --ink-soft: #5D6D7E;
+    --muted: #95A5A6;
+    --line: #E8E6E0;
+    --accent: #2A9D8F;
+    --accent-dark: #1F756B;
+    --warm: #E76F51;
+    --gold: #E9C46A;
+    --success: #52B788;
+    --highlight: #FFF4D6;
+    --highlight-edge: #F1D87E;
+    --shadow: 0 1px 3px rgba(44,62,80,0.04), 0 8px 24px rgba(44,62,80,0.06);
   }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
   body {
-    font-family: var(--sans);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
     background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 14px;
-    line-height: 1.5;
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
   }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
 
-  /* ── HEADER ── */
-  .header {
-    border-bottom: 1px solid var(--border);
-    padding: 20px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  header.hero {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--line);
   }
-  .header-left { display: flex; align-items: center; gap: 16px; }
-  .logo-mark {
-    width: 38px; height: 38px;
-    border: 1.5px solid var(--accent);
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--accent);
-    font-family: var(--mono);
-    font-size: 13px; font-weight: 500;
-    flex-shrink: 0;
-  }
-  .header-title { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; }
-  .header-sub   { font-size: 12px; color: var(--text2); margin-top: 1px; font-family: var(--mono); }
-  .header-badge {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    background: var(--accent-bg);
-    border: 1px solid var(--accent-dim);
-    padding: 4px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.3px;
-  }
-
-  /* ── LAYOUT ── */
-  .main { padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
-
-  /* ── STAT CARDS ── */
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--rad2);
-    padding: 16px 18px;
-    transition: border-color 0.2s;
-  }
-  .stat-card.highlight {
-    border-color: var(--accent-dim);
-    background: linear-gradient(135deg, var(--surface) 0%, rgba(0,122,99,0.15) 100%);
-  }
-  .stat-label {
-    font-size: 11px;
-    font-family: var(--mono);
-    color: var(--text2);
-    text-transform: uppercase;
+  header.hero .crumbs {
+    font-size: 12px;
+    color: var(--muted);
     letter-spacing: 0.8px;
-    margin-bottom: 6px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .stat-label svg { flex-shrink: 0; }
-  .stat-value {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text);
-    font-family: var(--mono);
-    letter-spacing: -0.5px;
-  }
-  .stat-card.highlight .stat-value { color: var(--accent); }
-
-  /* ── TWO-COLUMN GRID ── */
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-
-  /* ── PANEL ── */
-  .panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--rad2);
-    overflow: hidden;
-  }
-  .panel-head {
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .panel-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    display: flex; align-items: center; gap: 8px;
-    letter-spacing: -0.1px;
-  }
-  .panel-title svg { color: var(--accent); }
-  .panel-count {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text2);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 2px 8px; border-radius: 20px;
-  }
-  .panel-body { padding: 14px; }
-
-  /* ── SEARCH & FILTERS ── */
-  .search-wrap { position: relative; margin-bottom: 10px; }
-  .search-wrap svg {
-    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-    color: var(--text3); pointer-events: none;
-  }
-  .search-input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1.5px solid var(--border2);
-    border-radius: var(--rad);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 13px;
-    padding: 9px 12px 9px 34px;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .search-input::placeholder { color: var(--text3); }
-  .search-input:focus { border-color: var(--accent); background: var(--surface3); }
-
-  .filter-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
-  .chip {
-    font-size: 11px;
-    font-family: var(--mono);
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.2px;
-  }
-  .chip:hover  { border-color: var(--border2); color: var(--text); }
-  .chip.active { border-color: var(--accent); background: var(--accent-bg2); color: var(--accent); }
-
-  /* ── CATALOGUE ITEMS ── */
-  .catalogue-list { max-height: 450px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; }
-  .catalogue-list::-webkit-scrollbar { width: 4px; }
-  .catalogue-list::-webkit-scrollbar-track { background: transparent; }
-  .catalogue-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .mat-card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--rad);
-    padding: 11px 13px;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    display: flex; align-items: flex-start; gap: 10px;
-  }
-  .mat-card:hover { border-color: var(--border2); background: var(--surface3); }
-  .mat-info { flex: 1; min-width: 0; }
-  .mat-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; margin-bottom: 2px; }
-  .mat-cat  { font-size: 10px; font-family: var(--mono); color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-  .mat-desc { font-size: 11px; color: var(--text2); line-height: 1.4; }
-  .mat-right { flex-shrink: 0; text-align: right; }
-  .mat-price { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; margin-bottom: 6px; }
-  .mat-price span { font-size: 10px; color: var(--text2); }
-
-  .add-btn {
-    background: var(--accent-bg2);
-    border: 1px solid var(--accent-dim);
-    color: var(--accent);
-    font-size: 11px;
-    font-family: var(--mono);
-    padding: 4px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .add-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-
-  /* ── MTO LIST ── */
-  .mto-list { max-height: 450px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
-  .mto-list::-webkit-scrollbar { width: 4px; }
-  .mto-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .empty-state {
-    border: 1.5px dashed var(--border);
-    border-radius: var(--rad2);
-    padding: 40px 20px;
-    text-align: center;
-  }
-  .empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.3; }
-  .empty-text { font-size: 13px; color: var(--text2); }
-
-  /* ── MTO ROW ── */
-  .mto-row {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--rad2);
-    overflow: hidden;
-    transition: border-color 0.15s;
-  }
-  .mto-row:focus-within { border-color: var(--border2); }
-
-  .mto-row-head {
-    padding: 10px 13px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .mto-row-name { font-size: 12px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.3; }
-  .mto-row-total { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; flex-shrink: 0; }
-
-  .mto-row-inputs {
-    padding: 0 13px 11px;
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  }
-
-  /* ── THE KEY PIECE: CLEAR INPUTS ── */
-  .input-group { display: flex; flex-direction: column; gap: 3px; }
-  .input-label {
-    font-size: 10px;
-    font-family: var(--mono);
-    color: var(--text3);
     text-transform: uppercase;
-    letter-spacing: 0.6px;
+    margin-bottom: 18px;
   }
-
-  input[type="number"], input[type="text"], select {
-    background: var(--bg);
-    border: 1.5px solid var(--border2);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: var(--mono);
+  header.hero h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 44px;
+    line-height: 1.15;
+    font-weight: 600;
+    margin: 0 0 16px;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+  }
+  header.hero .lede {
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 720px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  header.hero .lede strong { color: var(--ink); font-weight: 600; }
+  header.hero .tip {
+    margin-top: 22px;
     font-size: 13px;
-    font-weight: 500;
-    padding: 7px 10px;
-    outline: none;
-    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
-    -moz-appearance: textfield;
+    color: var(--ink-soft);
+    background: var(--highlight);
+    border: 1px solid var(--highlight-edge);
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: inline-block;
   }
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-  input:focus, select:focus {
-    border-color: var(--accent);
-    background: #0b1a16;
-    box-shadow: 0 0 0 3px rgba(0,212,170,0.10);
+  header.hero .tip strong { color: var(--ink); }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 40px;
+    padding: 40px 0 60px;
   }
-  input::placeholder { color: var(--text3); font-weight: 400; }
+  main { min-width: 0; }
 
-  select {
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234d6080' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    padding-right: 26px;
+  aside.scenario {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
   }
-  select option { background: var(--surface2); color: var(--text); }
+  aside.scenario h3 {
+    font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--accent-dark); margin: 0 0 14px; font-weight: 700;
+  }
+  aside.scenario h3:not(:first-child) { margin-top: 22px; }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px;
+  }
+  .field .field-hint {
+    font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.45;
+  }
+  .field input[type=number], .field select {
+    width: 100%; padding: 7px 10px;
+    border: 1px solid var(--line); border-radius: 6px;
+    font-family: inherit; font-size: 13.5px;
+    background: var(--highlight);
+  }
+  .field select { background: white; }
+  .field input[type=number]:focus, .field select:focus {
+    outline: none; border-color: var(--accent);
+  }
+  .field input[type=range] { width: 100%; accent-color: var(--accent); }
+  .range-row { display: flex; align-items: center; gap: 10px; }
+  .range-row input[type=range] { flex: 1; }
+  .range-row .val {
+    font-weight: 700; min-width: 56px; text-align: right;
+    color: var(--accent-dark); font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
 
-  .qty-input   { width: 80px; text-align: right; }
-  .price-input { width: 90px; text-align: right; }
-  .unit-select { width: 70px; }
-  .desc-input  { flex: 1; min-width: 120px; font-family: var(--sans); font-size: 12px; font-weight: 400; }
-
-  .mto-divider { display: flex; align-items: center; gap: 6px; padding: 0 13px 3px; }
-  .mto-divider span { font-family: var(--mono); font-size: 11px; color: var(--text3); }
-
-  .mto-row-btns { display: flex; gap: 4px; flex-shrink: 0; }
-  .icon-btn {
-    width: 28px; height: 28px;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    cursor: pointer;
+  .findings { margin-bottom: 36px; }
+  .finding-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .finding-card.warning { border-left: 4px solid var(--warm); }
+  .finding-card.success { border-left: 4px solid var(--success); }
+  .check {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--success); color: white;
     display: flex; align-items: center; justify-content: center;
-    color: var(--text2);
-    transition: all 0.15s;
-    flex-shrink: 0;
+    font-weight: 700; font-size: 18px;
   }
-  .icon-btn:hover { background: var(--surface3); border-color: var(--border); color: var(--text); }
-  .icon-btn.danger:hover { background: rgba(242,92,92,0.1); border-color: rgba(242,92,92,0.3); color: var(--danger); }
+  .warning .check { background: var(--warm); }
+  .finding-card h3 {
+    margin: 0 0 6px; font-size: 22px; font-weight: 600;
+    font-family: Georgia, serif; letter-spacing: -0.3px;
+  }
+  .finding-card .narration {
+    font-size: 14.5px; color: var(--ink-soft); line-height: 1.6;
+  }
+  .finding-card .narration strong { color: var(--ink); }
 
-  /* ── EXPANDED NOTES ── */
-  .mto-expand {
-    border-top: 1px solid var(--border);
-    padding: 10px 13px;
-    background: var(--surface);
-    display: none;
-    flex-direction: column; gap: 8px;
+  nav.section-nav {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 28px;
   }
-  .mto-expand.open { display: flex; }
-  .mto-source { font-size: 10px; font-family: var(--mono); color: var(--text3); line-height: 1.6; }
-  .mto-source strong { color: var(--text2); }
-
-  /* ── TOTALS ── */
-  .totals-panel {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--rad2);
-    margin-top: 12px;
-    overflow: hidden;
+  nav.section-nav button {
+    background: none; border: none; border-bottom: 3px solid transparent;
+    padding: 12px 16px; font-size: 14px; font-weight: 600;
+    color: var(--muted); cursor: pointer; margin-bottom: -1px;
+    font-family: inherit;
+    transition: color 0.15s, border-color 0.15s;
   }
-  .totals-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .totals-row:last-child { border-bottom: none; }
-  .totals-row.grand {
-    background: linear-gradient(90deg, var(--accent-bg) 0%, transparent 100%);
-    border-top: 1px solid var(--accent-dim);
-    border-bottom: none;
-  }
-  .totals-label {
-    font-size: 12px; color: var(--text2);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .totals-value { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
-  .totals-row.grand .totals-label { color: var(--accent); font-weight: 500; font-size: 13px; }
-  .totals-row.grand .totals-value { color: var(--accent); font-size: 18px; }
-
-  .pct-input {
-    width: 48px !important;
-    text-align: center !important;
-    font-size: 12px !important;
-    padding: 4px 6px !important;
-    display: inline-block !important;
-    vertical-align: middle;
+  nav.section-nav button:hover { color: var(--ink); }
+  nav.section-nav button.active {
+    color: var(--accent-dark); border-bottom-color: var(--accent);
   }
 
-  /* ── ACTION BUTTONS ── */
-  .actions { display: flex; gap: 10px; margin-top: 14px; }
-  .btn-primary {
-    background: var(--accent);
-    color: var(--bg);
-    border: none;
-    border-radius: var(--rad);
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 500;
-    padding: 9px 18px;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 7px;
-    letter-spacing: 0.3px;
-    transition: opacity 0.15s, transform 0.1s;
+  .panel-section { display: none; animation: fadeIn 0.3s ease-out; }
+  .panel-section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
   }
-  .btn-primary:hover { opacity: 0.88; }
-  .btn-primary:active { transform: scale(0.97); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--danger);
-    border: 1px solid rgba(242,92,92,0.25);
-    border-radius: var(--rad);
-    font-family: var(--mono);
-    font-size: 12px;
-    padding: 9px 18px;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 7px;
-    transition: all 0.15s;
+  .panel-section .question {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 8px;
+    letter-spacing: -0.3px;
   }
-  .btn-ghost:hover { background: rgba(242,92,92,0.08); border-color: var(--danger); }
+  .panel-section .intro {
+    font-size: 16px; color: var(--ink-soft); line-height: 1.6;
+    margin: 0 0 28px; max-width: 780px;
+  }
 
-  /* ── FOOTER ── */
-  .footer {
-    border-top: 1px solid var(--border);
-    padding: 18px 32px;
-    margin-top: 32px;
-    font-size: 11px;
-    font-family: var(--mono);
-    color: var(--text3);
-    line-height: 1.8;
+  .term {
+    display: inline-flex; align-items: center; gap: 2px;
+    cursor: help;
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    color: inherit;
+    font-weight: inherit;
   }
-  .footer strong { color: var(--text2); }
-
-  /* ── TOAST ── */
-  .toast {
-    position: fixed; top: 20px; right: 20px; z-index: 9999;
-    background: var(--surface2);
-    border: 1px solid var(--accent-dim);
-    color: var(--accent);
-    border-radius: var(--rad);
-    padding: 10px 16px;
-    font-family: var(--mono);
-    font-size: 12px;
-    display: flex; align-items: center; gap: 8px;
+  .term .q {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px;
+    background: var(--accent); color: white;
+    border-radius: 50%; font-size: 10px; font-weight: 700;
+    margin-left: 2px;
+    line-height: 1;
+  }
+  .term:hover .q { background: var(--accent-dark); }
+  .term .tip-box {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    width: 280px;
+    text-align: left;
+    font-weight: normal;
+    z-index: 100;
     opacity: 0; pointer-events: none;
-    transform: translateY(-6px);
-    transition: opacity 0.2s, transform 0.2s;
+    transition: opacity 0.15s;
+    box-shadow: 0 8px 20px rgba(44,62,80,0.18);
   }
-  .toast.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .term .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%; left: 50%; transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--ink);
+  }
+  .term:hover .tip-box, .term.open .tip-box { opacity: 1; pointer-events: auto; }
 
-  /* ── CATEGORY COLOUR DOT ── */
-  .cat-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th {
+    background: #F4F2EC;
+    text-align: left; padding: 10px 12px;
+    font-weight: 600; color: var(--ink);
+    border-bottom: 2px solid var(--line);
+    position: sticky; top: 0; z-index: 5;
+  }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr.cat-row td {
+    background: #EEF6F4; color: var(--accent-dark);
+    font-weight: 700; font-size: 12.5px;
+    padding: 8px 12px;
+  }
+  tr.total-row td {
+    background: #FBF7E8;
+    font-weight: 700;
+    border-top: 2px solid var(--gold);
+  }
+  tr.grand-total td {
+    background: linear-gradient(0deg, #FBF0D4, #FFF7E0);
+    font-weight: 700; font-size: 14px;
+    border-top: 2px solid var(--accent);
+    color: var(--ink);
+  }
+  td input[type=number] {
+    width: 100%; padding: 4px 8px;
+    border: 1px solid var(--line); border-radius: 4px;
+    font-family: inherit; font-size: 13px;
+    background: var(--highlight);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  td input[type=number]:focus { outline: none; border-color: var(--accent); background: white; }
+  td.calc { background: #F4FBF8; color: var(--accent-dark); font-weight: 600; }
+  td.muted { color: var(--muted); font-size: 12.5px; }
 
-  /* ── NO RESULTS ── */
-  .no-results { padding: 20px; text-align: center; color: var(--text2); font-size: 13px; }
+  .pill {
+    display: inline-block; padding: 2px 9px;
+    border-radius: 11px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .pill.confirmed { background: #D4F1E5; color: #1F756B; }
+  .pill.estimate  { background: #FCEFCF; color: #8B6914; }
+  .pill.gap       { background: #FDDDD5; color: #A03B22; }
+  .pill.team      { background: #DDE9F5; color: #1F5A8B; }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 18px 0 28px;
+  }
+  .compare-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    position: relative;
+  }
+  .compare-card.recommended {
+    border-color: var(--accent);
+    border-width: 2px;
+    background: #F4FBF8;
+  }
+  .compare-card .rec-tag {
+    position: absolute; top: -10px; left: 16px;
+    background: var(--accent); color: white;
+    font-size: 10.5px; font-weight: 700;
+    padding: 3px 10px; border-radius: 10px;
+    letter-spacing: 0.4px;
+  }
+  .compare-card h4 {
+    margin: 0 0 6px; font-size: 15px; color: var(--ink);
+  }
+  .compare-card .price {
+    font-family: Georgia, serif;
+    font-size: 26px; font-weight: 600;
+    color: var(--accent-dark);
+    margin-bottom: 12px;
+    letter-spacing: -0.4px;
+  }
+  .compare-card .pros, .compare-card .cons {
+    font-size: 12.5px; line-height: 1.5;
+    margin: 5px 0; color: var(--ink-soft);
+  }
+  .compare-card .pros::before { content: "+ "; color: var(--success); font-weight: 700; }
+  .compare-card .cons::before { content: "\2212 "; color: var(--warm); font-weight: 700; }
+
+  .grid-2 {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+  }
+  .info-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+  .info-card h4 {
+    margin: 0 0 12px; font-size: 14px; color: var(--accent-dark);
+    font-weight: 700; letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .info-card .row {
+    display: flex; justify-content: space-between;
+    padding: 7px 0; border-bottom: 1px solid var(--line);
+    font-size: 13.5px;
+  }
+  .info-card .row:last-child { border-bottom: none; }
+  .info-card .k { color: var(--ink-soft); }
+  .info-card .v { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+  .lcoe-bars { margin: 18px 0 24px; }
+  .lcoe-bar {
+    display: grid;
+    grid-template-columns: 260px 1fr 90px;
+    align-items: center; gap: 14px;
+    padding: 10px 0;
+  }
+  .lcoe-bar .name { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .lcoe-bar .name small { display: block; font-size: 11.5px; font-weight: 400; color: var(--muted); }
+  .lcoe-bar .track {
+    background: var(--line); border-radius: 12px; height: 28px;
+    position: relative; overflow: hidden;
+  }
+  .lcoe-bar .fill {
+    height: 100%; border-radius: 12px;
+    transition: width 0.4s ease-out;
+    display: flex; align-items: center; padding-right: 10px;
+    justify-content: flex-end;
+    color: white; font-size: 11.5px; font-weight: 700;
+  }
+  .lcoe-bar .fill.ours { background: var(--accent); }
+  .lcoe-bar .fill.bench-low { background: var(--gold); }
+  .lcoe-bar .fill.bench-med { background: #E29A40; }
+  .lcoe-bar .fill.bench-high { background: var(--warm); }
+  .lcoe-bar .num {
+    font-size: 14px; font-weight: 700; text-align: right;
+    font-variant-numeric: tabular-nums; color: var(--ink);
+  }
+
+  .narrative {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 36px;
+    box-shadow: var(--shadow);
+  }
+  .narrative h3 {
+    font-family: Georgia, serif;
+    font-size: 20px; font-weight: 600;
+    color: var(--ink); margin: 22px 0 10px;
+    letter-spacing: -0.2px;
+  }
+  .narrative h3:first-child { margin-top: 0; }
+  .narrative p, .narrative li { font-size: 15px; line-height: 1.75; color: var(--ink); }
+  .narrative ul { padding-left: 22px; margin: 6px 0 14px; }
+  .narrative li { margin-bottom: 6px; }
+  .narrative strong { color: var(--ink); font-weight: 700; }
+  .narrative .sources { font-size: 12px; color: var(--muted); margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); line-height: 1.6; }
+
+  footer {
+    padding: 28px 0; text-align: center;
+    font-size: 12px; color: var(--muted);
+    border-top: 1px solid var(--line);
+    background: var(--panel);
+    margin-top: 60px;
+  }
+
+  @media (max-width: 920px) {
+    .container { padding: 0 20px; }
+    header.hero { padding: 32px 0 24px; }
+    header.hero h1 { font-size: 30px; }
+    header.hero .lede { font-size: 16px; }
+    .layout { grid-template-columns: 1fr; gap: 24px; }
+    aside.scenario { position: static; max-height: none; }
+    .compare-grid, .grid-2 { grid-template-columns: 1fr; }
+    .lcoe-bar { grid-template-columns: 1fr 70px; }
+    .lcoe-bar .name { grid-column: 1 / -1; }
+    .panel-section .question { font-size: 24px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header-left">
-    <div class="logo-mark">WF</div>
-    <div>
-      <div class="header-title">Wind Farm Materials Pricing Tool</div>
-      <div class="header-sub">ACCRAR · 50 × 14 MW WTG · MP-TP Foundations · North Sea</div>
-    </div>
-  </div>
-  <div style="display:flex;align-items:center;gap:12px">
-    <span class="header-badge">CIVE60001 · GROUP 3</span>
-    <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">Q1 2026 Prices</span>
+<div class="container">
+
+<header class="hero">
+  <div class="crumbs">Charles &amp; Jean · CIVE60001 Group 3 · 2026-06-03</div>
+  <h1>Is fixing the 24-year-old wind farm cheaper than building a new one?</h1>
+  <p class="lede">
+    The <strong>ACCRAR wind farm</strong> has 50 turbines, 700&nbsp;MW of capacity, and sits 25&nbsp;km off the east coast of Scotland.
+    It is in year 24 of a 27-year operational design life. Rambøll wants to know whether it makes
+    economic sense to keep it running for another 10 years. This tool runs the numbers.
+  </p>
+  <div class="tip">
+    Hover any underlined term for a definition. Move the sliders to try different scenarios.
   </div>
 </header>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-  <span id="toast-msg"></span>
-</div>
+<div class="layout">
 
-<main class="main">
+<main>
 
-  <!-- STAT CARDS -->
-  <div class="stats" id="stats">
-    <div class="stat-card">
-      <div class="stat-label">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        MTO items
+  <h2 style="font-family:Georgia,serif;font-size:26px;font-weight:600;margin:0 0 18px;letter-spacing:-0.3px">The bottom line</h2>
+  <div class="findings">
+
+    <div class="finding-card success">
+      <div class="check">✓</div>
+      <div>
+        <h3>Total repair cost: £<span id="bl-capex">…</span>&nbsp;M</h3>
+        <p class="narration">
+          That works out to about <strong>£<span id="bl-capex-kw">…</span> per kW</strong> of installed capacity.
+          Building a new offshore wind farm costs about <strong>£3,976 per kW</strong> (
+          <span class="term" data-def="The Arup 2024 study, commissioned by the UK government's Department for Energy Security and Net Zero. It is the most recent independent benchmark for the cost of new offshore wind in Britain. Published 24 July 2025.">Arup/DESNZ 2024<span class="q">?</span></span>
+          ). We are spending around <strong><span id="bl-pct">…</span>%</strong> of what building new would cost.
+        </p>
       </div>
-      <div class="stat-value" id="stat-count">0</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-        Materials subtotal
+
+    <div class="finding-card success">
+      <div class="check">✓</div>
+      <div>
+        <h3>Payback: <span id="bl-payback">…</span></h3>
+        <p class="narration">
+          The farm earns back the repair money in <span id="bl-payback2">…</span> of extra operation.
+          That is the
+          <span class="term" data-def="Payback period is how long it takes for cumulative earnings to equal the upfront investment. After payback, every year of operation is pure benefit.">payback period<span class="q">?</span></span>.
+          Everything past that point is profit.
+        </p>
       </div>
-      <div class="stat-value" id="stat-sub">£0</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        Offshore + contingency
+
+    <div class="finding-card success">
+      <div class="check">✓</div>
+      <div>
+        <h3>Cost of electricity: £<span id="bl-lcoe">…</span> / MWh</h3>
+        <p class="narration">
+          This is our
+          <span class="term" data-def="LCOE means Levelised Cost of Electricity. It is the price per MWh that the asset would need to sell its power at to exactly break even over its life. The industry uses it to compare different power sources on equal terms. Lower is cheaper.">LCOE<span class="q">?</span></span>,
+          which is just (total cost) divided by (total energy produced). A new offshore wind farm
+          produces electricity at <strong>£55 to £124 per MWh</strong>. Extending this farm gets us electricity at
+          <strong><span id="bl-lcoe-ratio">…</span>×</strong> cheaper than building new.
+        </p>
       </div>
-      <div class="stat-value" id="stat-add">£0</div>
     </div>
-    <div class="stat-card highlight">
-      <div class="stat-label">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        Total estimate
+
+    <div class="finding-card" id="verdict-card">
+      <div class="check" id="verdict-icon">✓</div>
+      <div>
+        <h3 id="verdict-text">Recommendation: <span style="color:var(--accent-dark)">EXTEND BY <span id="bl-years">10</span> YEARS</span></h3>
+        <p class="narration" id="verdict-narration">
+          Repair costs a small fraction of new-build capex. The asset earns the money back in under a year.
+          Electricity from the extended life costs roughly a third of new-build LCOE.
+          We picked 10 years because Rambøll's Meeting 3 verdict was that 15 is too long for the welds to survive.
+          The team's FLS shows 10 years stays inside the fatigue allowance.
+        </p>
       </div>
-      <div class="stat-value" id="stat-total">£0</div>
     </div>
+
   </div>
 
-  <!-- MAIN GRID -->
-  <div class="grid">
+  <nav class="section-nav">
+    <button class="active" data-tab="catalogue">What we are spending it on</button>
+    <button data-tab="logistics">How the rocks and crews get there</button>
+    <button data-tab="roi">Does it pay back?</button>
+    <button data-tab="lcoe">Cheaper than new?</button>
+    <button data-tab="narrative">The full writeup</button>
+  </nav>
 
-    <!-- LEFT: CATALOGUE -->
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-title">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-          Material catalogue
-        </div>
-        <span class="panel-count" id="cat-count">19 materials</span>
+  <section class="panel-section active" id="tab-catalogue">
+    <h2 class="question">What needs fixing, and what does it cost?</h2>
+    <p class="intro">
+      25 items across 6 categories. Edit any yellow cell to see how totals shift. The pill on each row
+      says where the number came from: <span class="pill confirmed">confirmed</span> from a team document,
+      <span class="pill estimate">estimate</span> an industry benchmark, or
+      <span class="pill team">team</span> a team calc or pending decision.
+    </p>
+
+    <h3 style="font-family:Georgia,serif;font-size:18px;margin-top:24px;color:var(--ink)">
+      Fixing the boat-strike dent on CAN07
+    </h3>
+    <p style="font-size:14px;color:var(--ink-soft);max-width:780px">
+      A
+      <span class="term" data-def="CTV stands for Crew Transfer Vessel, a small fast boat that ferries technicians out to the turbines. The 200 tonne CTV in question hit one turbine at 2 m/s and dented the steel inward by 130 mm.">CTV (200 t)<span class="q">?</span></span>
+      hit
+      <span class="term" data-def="CAN07 is the seventh cylindrical 'can' (steel section) of the monopile, counting up from the seabed. It sits in the splash zone, the worst spot for both corrosion and impact loads. It now carries a 130 mm inward dent from the boat strike.">CAN07<span class="q">?</span></span>
+      and dented it 130 mm. There are three sensible ways to repair it. We recommend the bolted clamp.
+      It is the cheapest, fastest to install, and avoids offshore welding in the
+      <span class="term" data-def="The splash zone is the part of the tower that goes underwater at high tide and is exposed at low tide. Wet-and-dry cycling plus oxygen make it the worst spot for corrosion.">splash zone<span class="q">?</span></span>.
+    </p>
+
+    <div class="compare-grid">
+      <div class="compare-card recommended">
+        <span class="rec-tag">RECOMMENDED</span>
+        <h4>Bolted clamp</h4>
+        <div class="price">£150,000</div>
+        <div class="pros">Diver installed, no offshore welding</div>
+        <div class="pros">Cheapest option, fastest install</div>
+        <div class="pros">Reversible if a better solution comes along</div>
+        <div class="cons">Mechanical joint needs annual torque check</div>
       </div>
-      <div class="panel-body">
-        <div class="search-wrap">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input class="search-input" type="text" id="search" placeholder="Search materials, categories…" oninput="renderCatalogue()"/>
-        </div>
-        <div class="filter-chips" id="chips"></div>
-        <div class="catalogue-list" id="catalogue-list"></div>
+      <div class="compare-card">
+        <h4>
+          <span class="term" data-def="CFRP stands for Carbon-Fibre Reinforced Polymer. Picture high-strength fibreglass tape. You wrap it around the damaged section and bond it with resin. Lightweight and no welding needed, but the bond can degrade underwater over time.">CFRP wrap<span class="q">?</span></span>
+        </h4>
+        <div class="price">£250,000</div>
+        <div class="pros">Lightweight, no hot work offshore</div>
+        <div class="pros">Diver or ROV installable</div>
+        <div class="cons">Bond can degrade in splash zone</div>
+        <div class="cons">High £/m² composite material cost</div>
       </div>
-    </div>
-
-    <!-- RIGHT: MTO -->
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-title">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          Material take-off (MTO)
-        </div>
-        <span class="panel-count" id="mto-count-badge">0 items</span>
-      </div>
-      <div class="panel-body">
-        <div id="mto-content">
-          <div class="empty-state">
-            <div class="empty-icon">📋</div>
-            <div class="empty-text">Add materials from the catalogue<br>to build your MTO list</div>
-          </div>
-        </div>
-
-        <!-- TOTALS -->
-        <div class="totals-panel" id="totals-panel" style="display:none">
-          <div class="totals-row">
-            <span class="totals-label">Materials subtotal</span>
-            <span class="totals-value" id="t-sub">£0</span>
-          </div>
-          <div class="totals-row">
-            <span class="totals-label">
-              Offshore uplift
-              <input type="number" class="pct-input" id="pct-offshore" value="25" min="0" max="200" oninput="recalc()"/>
-              <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">%</span>
-            </span>
-            <span class="totals-value" id="t-offshore">£0</span>
-          </div>
-          <div class="totals-row">
-            <span class="totals-label">
-              Contingency
-              <input type="number" class="pct-input" id="pct-cont" value="15" min="0" max="100" oninput="recalc()"/>
-              <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">%</span>
-            </span>
-            <span class="totals-value" id="t-cont">£0</span>
-          </div>
-          <div class="totals-row grand">
-            <span class="totals-label">Total estimate</span>
-            <span class="totals-value" id="t-total">£0</span>
-          </div>
-        </div>
-
-        <!-- ACTION BUTTONS -->
-        <div class="actions" id="actions" style="display:none">
-          <button class="btn-primary" onclick="exportCSV()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Export MTO as CSV
-          </button>
-          <button class="btn-ghost" onclick="clearMTO()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
-            Clear MTO
-          </button>
-        </div>
+      <div class="compare-card">
+        <h4>
+          <span class="term" data-def="Slide a larger steel sleeve over the damaged section, then fill the gap between sleeve and tower with high-strength grout (a cement-like material). Restores almost the full original stiffness, but installation is heavy work and needs a jack-up vessel.">Grouted sleeve<span class="q">?</span></span>
+        </h4>
+        <div class="price">£800,000</div>
+        <div class="pros">Restores near-full structural integrity</div>
+        <div class="cons">Needs jack-up vessel at £200k/day</div>
+        <div class="cons">Difficult installation in the tidal zone</div>
+        <div class="cons">5× the cost of a clamp, longer weather window</div>
       </div>
     </div>
 
-  </div><!-- end grid -->
+    <h3 style="font-family:Georgia,serif;font-size:18px;margin-top:28px;color:var(--ink)">
+      Full catalogue
+    </h3>
+    <p style="font-size:14px;color:var(--ink-soft);max-width:780px;margin-bottom:8px">
+      Per-turbine cost multiplied by 50 turbines, unless a measure affects only one turbine
+      (like the actual dent repair).
+    </p>
+    <table id="catalogue-table">
+      <thead>
+        <tr>
+          <th style="width:50px">Cat</th>
+          <th>Measure</th>
+          <th class="num" style="width:90px">Qty / turbine</th>
+          <th class="num" style="width:85px"># turbines</th>
+          <th class="num" style="width:90px">£ / unit</th>
+          <th class="num" style="width:110px">£ <span class="term" data-def="CAPEX stands for Capital Expenditure. It is a one-off cost. Here it means the upfront repair spend.">CAPEX<span class="q">?</span></span></th>
+          <th class="num" style="width:120px">£/yr <span class="term" data-def="OPEX stands for Operating Expenditure. It is an ongoing annual cost (inspection, insurance, electricity, etc.). The 'uplift' is the extra OPEX the repair programme creates.">recurring<span class="q">?</span></span></th>
+        </tr>
+      </thead>
+      <tbody id="catalogue-body"></tbody>
+    </table>
+  </section>
+
+  <section class="panel-section" id="tab-logistics">
+    <h2 class="question">How do we get the rocks, sand and crews out there?</h2>
+    <p class="intro">
+      Two campaigns run in parallel during summer 2026 (Manon &amp; Sophie's plan). The
+      <strong>scour rectification</strong> campaign fills the 4&nbsp;m holes around each foundation with sand and
+      armours them with rock. The <strong>secondary-steel maintenance</strong> campaign handles anchors,
+      gratings, lighting, and so on. Numbers below come from the team's scour Gantt v2 and Maintenance Gantt.
+    </p>
+
+    <div class="grid-2">
+      <div class="info-card">
+        <h4>Scour campaign material take-off (whole farm)</h4>
+        <div class="row"><span class="k">
+          <span class="term" data-def="The armour layer is the top layer of larger rocks (0.14 m across, 0.35 m thick) that resists strong currents. Designed by Sophie &amp; Manon following DNV-RP-0618.">Armour rock<span class="q">?</span></span>
+          (d50 = 0.14&nbsp;m)
+        </span><span class="v">41,160 t</span></div>
+        <div class="row"><span class="k">
+          <span class="term" data-def="The filter layer is the bottom layer of smaller rocks (0.07 m across, 0.175 m thick) sitting on the sand. It stops the sand washing up through the gaps in the armour layer.">Filter rock<span class="q">?</span></span>
+          (d50 = 0.07&nbsp;m)
+        </span><span class="v">20,580 t</span></div>
+        <div class="row"><span class="k">Sand for scour-hole refill</span><span class="v">90,597 t (about 56,000 m³)</span></div>
+        <div class="row"><span class="k">Trains, Findon quarry to Inverness</span><span class="v">34 trains, 25 wagons each</span></div>
+        <div class="row"><span class="k">Rock-laying boats (Adhémar class)</span><span class="v">16 transits</span></div>
+        <div class="row"><span class="k">Dredger boats (Damen TSHD 4000)</span><span class="v">13 transits</span></div>
+        <div class="row"><span class="k">Inverness to ACCRAR transit</span><span class="v">25 km at 12.23 kn</span></div>
+      </div>
+
+      <div class="info-card">
+        <h4>Secondary-steel campaign schedule</h4>
+        <div class="row"><span class="k">Mobilisation</span><span class="v">1 week (from 2026-07-20)</span></div>
+        <div class="row"><span class="k">Anchor points replacement</span><span class="v">2 weeks</span></div>
+        <div class="row"><span class="k">GRP gratings replacement</span><span class="v">2 weeks</span></div>
+        <div class="row"><span class="k">Guardrails clean and recoat</span><span class="v">2 weeks</span></div>
+        <div class="row"><span class="k">Davit crane salt removal</span><span class="v">2 weeks (in parallel)</span></div>
+        <div class="row"><span class="k">External lighting replacement</span><span class="v">2 weeks</span></div>
+        <div class="row"><span class="k">Testing and commissioning</span><span class="v">1.5 weeks</span></div>
+        <div class="row"><span class="k"><strong>Total window</strong></span><span class="v"><strong>about 6 weeks (Jul 20 to Aug 27)</strong></span></div>
+      </div>
+
+      <div class="info-card" style="grid-column: 1 / -1">
+        <h4>Vessel day-rate assumptions</h4>
+        <p style="font-size:13px;color:var(--ink-soft);margin:0 0 10px">
+          Industry-typical day rates from published market surveys (4C Offshore, BVG Associates).
+          Manon or Sophie may have firmer numbers from their O&amp;M document worth substituting in.
+        </p>
+        <table style="font-size:13px">
+          <thead><tr><th>Resource</th><th class="num">£ / day</th><th>What it is used for here</th></tr></thead>
+          <tbody>
+            <tr><td>Rock-dumping fall-pipe vessel</td><td class="num">150,000</td><td>Laying armour and filter rock around each monopile (16 transits, around 7 vessel days total)</td></tr>
+            <tr><td>Dredger (Damen TSHD 4000)</td><td class="num">100,000</td><td>Sucking up sand to refill the 4&nbsp;m scour holes (13 transits, around 6 vessel days)</td></tr>
+            <tr><td><span class="term" data-def="A jack-up vessel is a ship with retractable legs that drop to the seabed and lift the hull above the waves, creating a stable working platform. Expensive, only needed for heavy lifts.">Jack-up vessel<span class="q">?</span></span></td><td class="num">200,000</td><td>Only needed if the grouted sleeve option is chosen for CAN07</td></tr>
+            <tr><td><span class="term" data-def="SOV stands for Service Operation Vessel. A larger ship with onboard accommodation for the technicians, so they live on it for the 6-week campaign instead of going back to shore each evening.">SOV<span class="q">?</span></span></td><td class="num">60,000</td><td>Accommodation and crew transfer for the 6-week secondary-steel campaign</td></tr>
+            <tr><td><span class="term" data-def="CTV stands for Crew Transfer Vessel. A small fast boat for day trips. Used here for daily personnel transport from shore (a 32 minute boat ride each way).">CTV<span class="q">?</span></span></td><td class="num">3,500</td><td>Daily personnel transfers (32 min each way)</td></tr>
+            <tr><td><span class="term" data-def="ROV stands for Remotely Operated Vehicle. An unmanned submarine controlled from the surface, carrying cameras and tools for underwater inspection.">ROV<span class="q">?</span></span> spread</td><td class="num">25,000</td><td>Underwater inspection and installing FBG sensors on CAN05</td></tr>
+            <tr><td>Diver spread (saturation)</td><td class="num">35,000</td><td>Installing the bolted clamp on CAN07 and the BL fender clamp on all 50 turbines</td></tr>
+            <tr><td>Survey vessel (Kongsberg EM2040)</td><td class="num">20,000</td><td>Post-storm bathymetric scour surveys</td></tr>
+            <tr><td>Rope-access crew</td><td class="num">8,000</td><td>Above-water coating and inspection work</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel-section" id="tab-roi">
+    <h2 class="question">Does the £9&nbsp;M spend earn itself back?</h2>
+    <p class="intro">
+      Year 0 is when we spend the
+      <span class="term" data-def="CAPEX stands for Capital Expenditure: the one-off upfront cost, paying for the bolted clamp, the rocks, the new lights, and so on.">CAPEX<span class="q">?</span></span>
+      to do the repairs. Years 1 through <span id="roi-N">10</span> are when the farm keeps running, earning revenue
+      from electricity and paying its usual operating costs. We
+      <span class="term" data-def="Discounting adjusts future cashflows down because money today is worth more than money tomorrow (you could invest it). At 6.2% per year, £1 received in 5 years is worth about £0.74 today. Discount factor: 1 divided by (1 + rate) to the power of years.">discount<span class="q">?</span></span>
+      every future cashflow back to today's value at 6.2%. The sum is the
+      <span class="term" data-def="NPV stands for Net Present Value: the total project value in today's pounds. A positive NPV means the project beats just leaving the money in a 6.2%-return alternative. Bigger is better.">NPV<span class="q">?</span></span>.
+    </p>
+
+    <div style="overflow-x:auto;margin-top:18px">
+    <table id="roi-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th class="num">Revenue (£M)</th>
+          <th class="num">Baseline OPEX (£M)</th>
+          <th class="num">Extra OPEX (£M)</th>
+          <th class="num">CAPEX (£M)</th>
+          <th class="num">Net cashflow (£M)</th>
+          <th class="num">Discount factor</th>
+          <th class="num">Discounted CF (£M)</th>
+          <th class="num">Cumulative NPV (£M)</th>
+        </tr>
+      </thead>
+      <tbody id="roi-body"></tbody>
+    </table>
+    </div>
+
+    <div class="grid-2" style="margin-top:24px">
+      <div class="info-card">
+        <h4>Key annual numbers</h4>
+        <div class="row"><span class="k">
+          <span class="term" data-def="AEP stands for Annual Energy Production: the GWh of electricity the farm makes in one year. Formula: capacity × capacity factor × hours in a year. 700 MW × 50.5% × 8,760 hours ÷ 1000 = 3,097 GWh.">AEP<span class="q">?</span></span>
+        </span><span class="v"><span id="r-aep">…</span> GWh/yr</span></div>
+        <div class="row"><span class="k">Revenue (AEP × price)</span><span class="v">£<span id="r-rev">…</span> M/yr</span></div>
+        <div class="row"><span class="k">Baseline OPEX</span><span class="v">£<span id="r-opex">…</span> M/yr</span></div>
+        <div class="row"><span class="k">Net margin after costs</span><span class="v">£<span id="r-margin">…</span> M/yr</span></div>
+        <div class="row"><span class="k"><strong>Project NPV (10 yrs)</strong></span><span class="v"><strong>£<span id="r-npv">…</span> M</strong></span></div>
+        <div class="row"><span class="k">Payback period</span><span class="v"><span id="r-payback">…</span></span></div>
+      </div>
+      <div class="info-card">
+        <h4>What this means</h4>
+        <div id="r-interpretation" style="font-size:14px;line-height:1.65;color:var(--ink)"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel-section" id="tab-lcoe">
+    <h2 class="question">Is the extended-life electricity cheaper than building new?</h2>
+    <p class="intro">
+      <span class="term" data-def="LCOE stands for Levelised Cost of Electricity. It is the price per MWh that the asset would need to sell its power at to exactly break even over its whole life. The industry uses it to compare different power sources on equal terms. Lower is cheaper. Formula: total lifetime cost (discounted) divided by total lifetime energy (discounted), giving £/MWh.">LCOE<span class="q">?</span></span>
+      is how the industry compares the cost of different power sources on equal terms. For new offshore wind in the UK,
+      it lands between £55 and £124 per MWh (
+      <span class="term" data-def="Arup/DESNZ 2024 'Renewable Energy Generation Cost &amp; Technical Assumptions, Offshore Wind' (24 July 2025). Low, Medium and High scenarios are £55.4, £88.5 and £124.0 per MWh in 2023 real prices.">Arup 2024 benchmark<span class="q">?</span></span>
+      ). Ours comes out around £32 because we skip the giant upfront capex. The asset is already built.
+    </p>
+
+    <div class="lcoe-bars">
+      <div class="lcoe-bar">
+        <div class="name">ACCRAR life extension <small>This study</small></div>
+        <div class="track"><div class="fill ours" id="bar-ours" style="width:30%"></div></div>
+        <div class="num">£<span id="lcoe-ours">…</span></div>
+      </div>
+      <div class="lcoe-bar">
+        <div class="name">New-build offshore wind <small>Arup 2024, low scenario</small></div>
+        <div class="track"><div class="fill bench-low" style="width:45%"></div></div>
+        <div class="num">£55.4</div>
+      </div>
+      <div class="lcoe-bar">
+        <div class="name">New-build offshore wind <small>Arup 2024, medium</small></div>
+        <div class="track"><div class="fill bench-med" style="width:72%"></div></div>
+        <div class="num">£88.5</div>
+      </div>
+      <div class="lcoe-bar">
+        <div class="name">New-build offshore wind <small>Arup 2024, high scenario</small></div>
+        <div class="track"><div class="fill bench-high" style="width:100%"></div></div>
+        <div class="num">£124.0</div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-top:18px">
+      <h4>Why is the LCOE so much lower for extension?</h4>
+      <p style="font-size:14px;line-height:1.7;color:var(--ink);margin:0">
+        Because the expensive bits are already paid for. New offshore wind capex is £3,976/kW. Most of that is
+        <span class="term" data-def="Predevelopment covers surveying the site, getting planning consent, and design work, all before any steel goes in the ground. About £216/kW for new builds.">predevelopment<span class="q">?</span></span>
+        (£216/kW),
+        <span class="term" data-def="Construction is the cost of building and installing the actual wind turbines, foundations, and array cables. About £2,823/kW for new builds.">construction<span class="q">?</span></span>
+        (£2,823/kW), and
+        <span class="term" data-def="Infrastructure is the offshore substation, export cable to shore, and onshore connection point. Owned by the OFTO (Offshore Transmission Owner). About £937/kW.">grid infrastructure<span class="q">?</span></span>
+        (£937/kW). ACCRAR has paid all of that already. We only need to spend about
+        £<span id="lcoe-capex-pkw">…</span>/kW on targeted repairs, roughly 0.3% of new-build capex. The existing
+        grid connection, seabed lease, and OFTO infrastructure all stay in place.
+      </p>
+    </div>
+  </section>
+
+  <section class="panel-section" id="tab-narrative">
+    <h2 class="question">The full writeup</h2>
+    <p class="intro">
+      Covers Gantt rows 31, 32, 33. Updates as you change the scenario.
+    </p>
+    <div class="narrative" id="narrative-content"></div>
+  </section>
+
 </main>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <strong>Price basis:</strong> UK market Q4 2025 / Q1 2026 ·
-  S355 structural steel £1,700–2,000/t (Mixdesigncalc / British Steel Nov 2025) ·
-  UHS grout from FoundOcean / Ducorit / Nautec ·
-  Cathodic protection from MME Group &amp; Cathodic Marine Engineering ·
-  Marine coatings from Jotun / Hempel offshore schedules ·
-  Subsea cable from Nexans / Prysmian ·
-  Rock armour from UK quarry supply ·
-  <strong>Offshore uplift</strong> covers mobilisation, marine logistics &amp; installation mark-up ·
-  Prices are indicative — obtain supplier quotes for final estimates ·
-  CBAM regulations may add £80–200/t to imported steel in 2026
+<aside class="scenario">
+  <h3>Adjust the scenario</h3>
+
+  <div class="field">
+    <label>Life extension target</label>
+    <div class="range-row">
+      <input type="range" id="i-life" min="0" max="15" step="1" value="10">
+      <span class="val"><span id="v-life">10</span> yr</span>
+    </div>
+    <div class="field-hint">Rambøll: "cannot survive 15 years extra". 10 is the upper viable.</div>
+  </div>
+
+  <h3>Revenue side</h3>
+  <div class="field">
+    <label>Electricity price (£/MWh)</label>
+    <input type="number" id="i-price" value="85" step="1">
+    <div class="field-hint">Arup blended LCOE benchmark.</div>
+  </div>
+  <div class="field">
+    <label>Capacity factor</label>
+    <div class="range-row">
+      <input type="range" id="i-cf" min="0.40" max="0.60" step="0.005" value="0.505">
+      <span class="val"><span id="v-cf">50.5</span>%</span>
+    </div>
+    <div class="field-hint">% of theoretical max output. Wind isn't always blowing.</div>
+  </div>
+
+  <h3>Cost side</h3>
+  <div class="field">
+    <label>O&amp;M baseline (k£/MW/yr)</label>
+    <input type="number" id="i-opex" value="46.5" step="0.5">
+    <div class="field-hint">Arup median (range 30.5 to 64.6).</div>
+  </div>
+  <div class="field">
+    <label>Discount rate</label>
+    <div class="range-row">
+      <input type="range" id="i-rate" min="0.03" max="0.10" step="0.001" value="0.062">
+      <span class="val"><span id="v-rate">6.2</span>%</span>
+    </div>
+    <div class="field-hint">Annual rate to discount future pounds to today's value.</div>
+  </div>
+
+  <h3>Repair options</h3>
+  <div class="field">
+    <label>CAN07 dent repair</label>
+    <select id="i-vi-option">
+      <option value="clamp" selected>Bolted clamp at £150k ★</option>
+      <option value="cfrp">CFRP wrap at £250k</option>
+      <option value="grouted">Grouted sleeve at £800k</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Boat-landing fender</label>
+    <select id="i-bl-option">
+      <option value="clamp" selected>Bolted clamp at £4k/turb ★</option>
+      <option value="weld">Weld and recoat at £8k/turb</option>
+      <option value="replace">Section replace at £15k/turb</option>
+    </select>
+  </div>
+
+  <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);line-height:1.55">
+    ★ marks the recommended option.<br>
+    Every <span style="background:var(--highlight);padding:0 4px;border-radius:3px">yellow cell</span> is editable.
+  </div>
+</aside>
+
+</div>
+
+</div>
+
+<footer>
+  ACCRAR Wind Farm Life Extension · Charles &amp; Jean · CIVE60001 Group 3 · drafted 2026-06-03 ·
+  Sources: project team files plus the Arup/DESNZ 2024 LCOE study
 </footer>
 
 <script>
-const CATALOG = [
-  {id:"s355_plate",  cat:"Structural Steel",         name:"Structural Steel Plate S355",       desc:"EN10025 S355J2+N. Monopile & jacket repairs, primary structure.",         unit:"t",   price:1850, src:"Mixdesigncalc / British Steel (Q1 2026)",            notes:"Fabrication +£400–800/t extra. CBAM uplift expected mid-2026."},
-  {id:"s355_sec",    cat:"Structural Steel",         name:"Structural Steel Sections S355",    desc:"UB/UC/RHS. Secondary structure, work platforms, bracing.",                unit:"t",   price:1700, src:"Mixdesigncalc / British Steel (Q1 2026)",            notes:"Universal beams, columns, hollow sections."},
-  {id:"s460",        cat:"Structural Steel",         name:"High-Strength Steel Plate S460",    desc:"EN10025-6 S460. Use where S355 utilisation ratios exceed limits.",        unit:"t",   price:2400, src:"Industry estimate (S355 + ~30% premium)",            notes:"High-stress, critical repair sections."},
-  {id:"ss316",       cat:"Structural Steel",         name:"Stainless Steel 316L",              desc:"Marine-grade austenitic. Boat landings, ladders, railings.",              unit:"t",   price:4200, src:"UK supplier estimate 2025–2026",                    notes:"EN10088. Splash zone secondary components."},
-  {id:"fab_sec",     cat:"Fabricated Components",   name:"Fabricated Secondary Steel",        desc:"Work platforms, boat landings, J-tubes, ladders — supplied fabricated.",  unit:"t",   price:3800, src:"Offshore secondary steel market rate (2025)",        notes:"Includes raw material + fabrication. Offshore coating extra."},
-  {id:"grout_clamp", cat:"Fabricated Components",   name:"Grouted Repair Clamp",              desc:"Split-sleeve clamp for tubular member repair. Subsea installation.",       unit:"nr",  price:45000,src:"TSC Subsea / IK Subsea estimate (2025)",             notes:"Highly dependent on member OD. Assumes 1.5–2.5 m OD."},
-  {id:"uhs_grout",   cat:"Grouting Materials",      name:"Ultra-High Strength Grout (UHS)",   desc:"≥120 MPa 28-day strength. TP-monopile connections, repair clamps.",       unit:"t",   price:1600, src:"FoundOcean / Ducorit / Nautec (2025)",               notes:"Ducorit D52 or equivalent. Material supply only."},
-  {id:"opc_grout",   cat:"Grouting Materials",      name:"OPC Grout",                         desc:"Ordinary Portland Cement grout. Pile-sleeve connections, void filling.",  unit:"t",   price:420,  src:"UK cement market (2025–2026)",                       notes:"Mix ratio W/C ~0.4. Subsea placement by pump spread."},
-  {id:"zinc_anode",  cat:"Cathodic Protection",     name:"Sacrificial Zinc Anodes",           desc:"99.9% Zn, ASTM B-6. Seawater cathodic protection for steel foundations.",unit:"kg",  price:4.80, src:"MME Group / industry pricing (2025)",                notes:"Bracelet or flush-mounted offshore type. DNV/Lloyd's certified."},
-  {id:"al_anode",    cat:"Cathodic Protection",     name:"Sacrificial Aluminium Anodes",      desc:"Al-Zn-In alloy, ASTM B-521. Higher capacity than zinc for subsea.",       unit:"kg",  price:5.50, src:"MME Group / Cathodic Marine Engineering (2025)",     notes:"Preferred for deepwater. Lighter per amp-hour than zinc."},
-  {id:"epoxy",       cat:"Coatings",                name:"Marine Epoxy Coating System",       desc:"3-coat system: primer + build + topcoat. Splash zone & tidal exposure.",  unit:"m²",  price:32,   src:"Jotun / Hempel offshore systems (2025)",             notes:"Material cost only. Application/access vessel extra."},
-  {id:"antifoul",    cat:"Coatings",                name:"Subsea Antifouling Coating",        desc:"Immersion zone coating incl. antifouling. Reduces hydrodynamic loads.",   unit:"m²",  price:22,   src:"Jotun / Hempel offshore pricing (2025)",             notes:"Material only. Inhibits marine growth build-up."},
-  {id:"rock",        cat:"Scour Protection",        name:"Rock Armour / Filter Stone",        desc:"Crushed granite/basalt 10–300 kg. Scour hole infill and protection.",     unit:"t",   price:38,   src:"UK quarry supply / offshore market (2025)",          notes:"Grading as per DNV-RP-C205. Larger scour = more volume."},
-  {id:"frond_mat",   cat:"Scour Protection",        name:"Concrete Frond Mat",                desc:"Pre-fabricated concrete frond mattress for seabed stabilisation.",        unit:"m²",  price:85,   src:"SubSea Protection Systems / estimate (2025)",        notes:"ROV or barge installation. Better for sensitive seabed."},
-  {id:"cable",       cat:"Cables",                  name:"Inter-Array Subsea Cable (33 kV)",  desc:"33 kV XLPE-insulated armoured subsea cable. WTG to offshore substation.",  unit:"m",   price:280,  src:"Nexans / Prysmian offshore (2025)",                  notes:"Supply only. Burial, J-tube installation costs extra."},
-  {id:"bolt_m36",    cat:"Fasteners",               name:"High-Strength Bolts M36 Gr10.9",   desc:"HDG or stainless M36 structural bolts with nut & washer set.",             unit:"nr",  price:14,   src:"Bulten / Nord-Lock UK (2025)",                       notes:"ISO 4014/4032. Use stainless for splash zone."},
-  {id:"bolt_m48",    cat:"Fasteners",               name:"High-Strength Bolts M48 Gr10.9",   desc:"M48 flange bolts. Primary structural connections, monopile flanges.",      unit:"nr",  price:38,   src:"Nord-Lock UK (2025)",                                notes:"Critical flanges. Calibrated torquing required offshore."},
-  {id:"weld_wire",   cat:"Fabrication Consumables", name:"Welding Wire / Consumables",        desc:"MIG/MAG flux-cored wire & electrodes. Offshore structural welding.",       unit:"kg",  price:6,    src:"Lincoln Electric / ESAB UK (2025)",                  notes:"DNV-certified consumables. ~5–10 kg per structural joint."},
-  {id:"concrete",    cat:"Concrete",                name:"Marine Concrete C40/50",            desc:"High-durability marine mix. Gravity base, J-tube sealing.",               unit:"m³",  price:280,  src:"UK ready-mix market (2025–2026)",                    notes:"CEM III/A with FA/GGBS blend for XS marine exposure class."}
+const measures = [
+  {cat:'B.1', name:'CAN07 dent repair, chosen option', qtyPerTurb:1, nTurb:1, costKey:'viOption', status:'team', src:'Vessel Impact.docx, 3 options compared above'},
+  {cat:'B.1', name:'CAN06 enhanced inspection (annual recurring)', qtyPerTurb:1, nTurb:50, cost:0, recPerUnit:1500, status:'estimate', src:'Splash zone monitoring per Vessel Impact.docx'},
+  {cat:'B.1', name:'CAN06 ICCP anode supplement', qtyPerTurb:2, nTurb:50, cost:8000, status:'estimate', src:'Anode set plus diver install'},
+  {cat:'B.1', name:'CAN05 FBG monitoring sensors', qtyPerTurb:1, nTurb:50, cost:6000, status:'estimate', src:'Fibre-Bragg Grating plus acoustic emission'},
+  {cat:'B.1', name:'CAN05 coating spot maintenance', qtyPerTurb:1, nTurb:50, cost:1500, status:'estimate', src:'See B.4 epoxy rate'},
+
+  {cat:'B.2', name:'Anchor points (fall-arrest)', qtyPerTurb:2, nTurb:50, cost:92, status:'confirmed', src:'£92 per unit, Damage Index xlsx'},
+  {cat:'B.2', name:'External lighting, aviation LED', qtyPerTurb:2, nTurb:50, cost:800, status:'estimate', src:'ICAO LED £400 to £1,200 midpoint'},
+  {cat:'B.2', name:'External lighting, marine nav (ATEX, solar)', qtyPerTurb:1, nTurb:50, cost:5000, status:'estimate', src:'£2k to £8k midpoint'},
+  {cat:'B.2', name:'GRP grating panel', qtyPerTurb:1, nTurb:50, cost:195, status:'confirmed', src:'£195 per unit, Damage Index xlsx'},
+  {cat:'B.2', name:'Davit crane support, clean and recoat', qtyPerTurb:1, nTurb:50, cost:8000, status:'estimate', src:'About 16h labour plus materials'},
+  {cat:'B.2', name:'Guardrails, abrasive blast and recoat', qtyPerTurb:1, nTurb:50, cost:2000, status:'estimate', src:'Spot repair'},
+
+  {cat:'B.3', name:'Boat-landing fender, chosen option', qtyPerTurb:1, nTurb:50, costKey:'blOption', status:'team', src:'Corrosion.docx and Technical Fixes.docx'},
+
+  {cat:'B.4', name:'ICCP anode replacement (30 yr design life reached)', qtyPerTurb:1, nTurb:50, cost:15000, status:'estimate', src:'Corrosion.docx'},
+  {cat:'B.4', name:'Spot coating at MP dent (one turbine only)', qtyPerTurb:1, nTurb:1, cost:3000, status:'estimate', src:'Offshore epoxy'},
+  {cat:'B.4', name:'Full BL fender recoat (ISO 8501-1 blast plus epoxy)', qtyPerTurb:1, nTurb:50, cost:10000, status:'estimate', src:'Splash zone allowance exceeded'},
+  {cat:'B.4', name:'Intermediate platform spot repairs', qtyPerTurb:1, nTurb:50, cost:2000, status:'estimate', src:'Guardrail interfaces'},
+
+  {cat:'B.5', name:'Armour rock material (d50 0.14 m)', qtyPerTurb:823, nTurb:50, cost:30, status:'team', src:'41,160 t total ÷ 50 piles at £30/t'},
+  {cat:'B.5', name:'Filter rock material (d50 0.07 m)', qtyPerTurb:412, nTurb:50, cost:25, status:'team', src:'20,580 t total ÷ 50 piles at £25/t'},
+  {cat:'B.5', name:'Sand for scour-hole refill', qtyPerTurb:1812, nTurb:50, cost:15, status:'team', src:'90,597 t total. Supply or on-site dredge.'},
+  {cat:'B.5', name:'Rail transport (Findon to Inverness)', qtyPerTurb:0.68, nTurb:50, cost:15000, status:'team', src:'34 trains at £15k/train'},
+  {cat:'B.5', name:'Rock-laying vessel (16 transits)', qtyPerTurb:0.32, nTurb:50, cost:65000, status:'estimate', src:'7 days at £150k = £1.05M'},
+  {cat:'B.5', name:'Dredger vessel (13 transits)', qtyPerTurb:0.26, nTurb:50, cost:46000, status:'estimate', src:'6 days at £100k = £600k'},
+
+  {cat:'B.6', name:'Coating visual inspection (annual)', qtyPerTurb:1, nTurb:50, cost:0, recPerUnit:2000, status:'estimate', src:'Rope access per turbine visit'},
+  {cat:'B.6', name:'Splash-zone coating detailed (every 2 to 3 yrs)', qtyPerTurb:0.4, nTurb:50, cost:0, recPerUnit:5000, status:'estimate', src:'Averaged across 2.5 yrs'},
+  {cat:'B.6', name:'Submerged ICCP and coating (every 5 yrs)', qtyPerTurb:0.2, nTurb:50, cost:0, recPerUnit:15000, status:'estimate', src:'ROV or diver per turbine'},
+  {cat:'B.6', name:'CP potential reference electrode survey', qtyPerTurb:0.2, nTurb:50, cost:0, recPerUnit:3500, status:'estimate', src:'Every 5 yrs averaged'},
+  {cat:'B.6', name:'Post-storm bathymetric and ROV survey', qtyPerTurb:1, nTurb:1, cost:0, recPerUnit:80000, status:'estimate', src:'One campaign per year'},
 ];
 
-const CAT_COLOURS = {
-  "Structural Steel":         "#4ea8de",
-  "Fabricated Components":    "#c084fc",
-  "Grouting Materials":       "#fb923c",
-  "Cathodic Protection":      "#34d399",
-  "Coatings":                 "#f472b6",
-  "Scour Protection":         "#a3e635",
-  "Cables":                   "#fbbf24",
-  "Fasteners":                "#94a3b8",
-  "Fabrication Consumables":  "#e879f9",
-  "Concrete":                 "#60a5fa"
+const catLabels = {
+  'B.1': 'B.1 Primary steel (vessel-impact repair and monitoring)',
+  'B.2': 'B.2 Secondary steel: replace',
+  'B.3': 'B.3 Secondary steel: boat-landing fender repair',
+  'B.4': 'B.4 Coatings and corrosion protection',
+  'B.5': 'B.5 Scour protection refill (whole farm)',
+  'B.6': 'B.6 Inspection programme (recurring OPEX uplift)',
 };
 
-const UNITS = ["t","kg","m","m²","m³","nr","LS"];
+const viOptions = { clamp:150000, cfrp:250000, grouted:800000 };
+const blOptions = { clamp:4000, weld:8000, replace:15000 };
+const blOptionLabels = { clamp:'bolted clamp', weld:'weld and recoat', replace:'section replacement' };
+const viOptionLabels = { clamp:'bolted clamp', cfrp:'CFRP wrap', grouted:'grouted sleeve' };
 
-let mto = [];
-let rowId = 0;
-let toastTimer = null;
-let activeCategory = "All";
+const state = {
+  life: 10, price: 85, cf: 0.505, opexK: 46.5, rate: 0.062,
+  viOption: 'clamp', blOption: 'clamp',
+  unitOverrides: {},
+};
 
-// ── INIT ──
-const cats = ["All", ...Object.keys(CAT_COLOURS)];
-const chipsEl = document.getElementById("chips");
-cats.forEach(c => {
-  const b = document.createElement("button");
-  b.className = "chip" + (c === "All" ? " active" : "");
-  b.textContent = c;
-  b.onclick = () => { activeCategory = c; document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active")); b.classList.add("active"); renderCatalogue(); };
-  chipsEl.appendChild(b);
-});
+function getMeasureCost(m, idx) {
+  if (m.costKey === 'viOption') return viOptions[state.viOption];
+  if (m.costKey === 'blOption') return blOptions[state.blOption];
+  const o = state.unitOverrides[idx] || {};
+  return o.cost !== undefined ? o.cost : m.cost;
+}
+function getQtyPerTurb(m, idx) {
+  const o = state.unitOverrides[idx] || {};
+  return o.qtyPerTurb !== undefined ? o.qtyPerTurb : m.qtyPerTurb;
+}
+function getNTurb(m, idx) {
+  const o = state.unitOverrides[idx] || {};
+  return o.nTurb !== undefined ? o.nTurb : m.nTurb;
+}
+function computeCapexByCat() {
+  const out = {};
+  Object.keys(catLabels).forEach(c => out[c] = 0);
+  measures.forEach((m, idx) => {
+    if (m.cat === 'B.6') return;
+    const q = getQtyPerTurb(m, idx) * getNTurb(m, idx);
+    out[m.cat] += q * getMeasureCost(m, idx);
+  });
+  return out;
+}
+function computeRecurring() {
+  let total = 0;
+  measures.forEach((m, idx) => {
+    if (m.cat !== 'B.6') return;
+    const q = getQtyPerTurb(m, idx) * getNTurb(m, idx);
+    total += q * (m.recPerUnit || 0);
+  });
+  return total;
+}
+function computeROI() {
+  const totalCapex = Object.values(computeCapexByCat()).reduce((a,b)=>a+b,0);
+  const recurring = computeRecurring();
+  const MW = 700;
+  const aep_gwh = MW * state.cf * 8760 / 1000;
+  const annualRev = aep_gwh * state.price * 1000;
+  const annualOpexBaseline = (state.opexK + 8.6 + 83.4) * MW * 1000;
+  const annualUplift = recurring;
+  const annualNetMargin = annualRev - annualOpexBaseline - annualUplift;
 
-renderCatalogue();
+  const years = [];
+  let cumNPV = 0;
+  for (let t = 0; t <= state.life; t++) {
+    const df = 1 / Math.pow(1 + state.rate, t);
+    let rev = 0, base = 0, uplift = 0, capex = 0;
+    if (t === 0) capex = totalCapex;
+    else { rev = annualRev; base = annualOpexBaseline; uplift = annualUplift; }
+    const netCF = rev - base - uplift - capex;
+    const discCF = netCF * df;
+    cumNPV += discCF;
+    years.push({ t, rev, base, uplift, capex, netCF, df, discCF, cumNPV });
+  }
+  let discOpex = 0, discAEP_gwh = 0;
+  for (let t = 1; t <= state.life; t++) {
+    const df = 1 / Math.pow(1 + state.rate, t);
+    discOpex += (annualOpexBaseline + annualUplift) * df;
+    discAEP_gwh += aep_gwh * df;
+  }
+  const lcoe = (totalCapex + discOpex) / (discAEP_gwh * 1000);
+  let payback = null;
+  for (let i = 0; i < years.length; i++) {
+    if (years[i].cumNPV >= 0) { payback = i; break; }
+  }
+  return { totalCapex, recurring, aep_gwh, annualRev, annualOpexBaseline, annualUplift, annualNetMargin, years, npv: cumNPV, payback, lcoe };
+}
+
+const fmt0 = v => Math.round(v).toLocaleString('en-GB');
+const fmt1 = v => v.toLocaleString('en-GB', {maximumFractionDigits:1});
+const fmt2 = v => v.toLocaleString('en-GB', {maximumFractionDigits:2, minimumFractionDigits:2});
 
 function renderCatalogue() {
-  const q = document.getElementById("search").value.toLowerCase();
-  const filtered = CATALOG.filter(m => {
-    const matchQ = !q || m.name.toLowerCase().includes(q) || m.cat.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q);
-    const matchC = activeCategory === "All" || m.cat === activeCategory;
-    return matchQ && matchC;
+  const body = document.getElementById('catalogue-body');
+  body.innerHTML = '';
+  const byCat = {};
+  measures.forEach((m, idx) => { (byCat[m.cat] = byCat[m.cat] || []).push({m, idx}); });
+
+  let grandCapex = 0, grandRec = 0;
+  Object.keys(catLabels).forEach(cat => {
+    if (!byCat[cat]) return;
+    let catCapex = 0, catRec = 0;
+    const header = document.createElement('tr');
+    header.className = 'cat-row';
+    header.innerHTML = `<td colspan="7">${catLabels[cat]}</td>`;
+    body.appendChild(header);
+
+    byCat[cat].forEach(({m, idx}) => {
+      const cost = getMeasureCost(m, idx);
+      const qpt = getQtyPerTurb(m, idx);
+      const nt = getNTurb(m, idx);
+      const capex = (cat === 'B.6') ? 0 : qpt * nt * cost;
+      const recurring = (cat === 'B.6') ? qpt * nt * (m.recPerUnit || 0) : 0;
+      catCapex += capex; catRec += recurring;
+
+      const tr = document.createElement('tr');
+      const lockedCost = !!m.costKey;
+      tr.innerHTML = `
+        <td>${m.cat}</td>
+        <td>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+            <span style="flex:1">${m.name}</span>
+            <span class="pill ${m.status}">${m.status}</span>
+          </div>
+          <div class="muted" style="margin-top:3px">${m.src}</div>
+        </td>
+        <td class="num"><input type="number" data-idx="${idx}" data-field="qtyPerTurb" value="${qpt}" step="any"></td>
+        <td class="num"><input type="number" data-idx="${idx}" data-field="nTurb" value="${nt}" step="1"></td>
+        <td class="num">${lockedCost ? `<span class="calc" style="display:inline-block;padding:3px 8px;border-radius:4px">£${fmt0(cost)}</span>` : `<input type="number" data-idx="${idx}" data-field="cost" value="${cost}" step="any">`}</td>
+        <td class="num calc">${cat === 'B.6' ? '-' : '£'+fmt0(capex)}</td>
+        <td class="num calc">${cat === 'B.6' ? '£'+fmt0(recurring)+'/yr' : '-'}</td>
+      `;
+      body.appendChild(tr);
+    });
+
+    const tot = document.createElement('tr');
+    tot.className = 'total-row';
+    tot.innerHTML = `<td colspan="5" style="text-align:right">Subtotal ${cat}:</td><td class="num">${cat==='B.6' ? '-' : '£'+fmt0(catCapex)}</td><td class="num">${cat==='B.6' ? '£'+fmt0(catRec)+'/yr' : '-'}</td>`;
+    body.appendChild(tot);
+
+    grandCapex += catCapex; grandRec += catRec;
   });
-  document.getElementById("cat-count").textContent = filtered.length + " material" + (filtered.length===1?"":"s");
-  const list = document.getElementById("catalogue-list");
-  if (filtered.length === 0) {
-    list.innerHTML = '<div class="no-results">No materials match your search.</div>';
-    return;
+
+  const grand = document.createElement('tr');
+  grand.className = 'grand-total';
+  grand.innerHTML = `<td colspan="5" style="text-align:right">TOTAL CAPEX plus recurring OPEX uplift:</td><td class="num">£${fmt0(grandCapex)}</td><td class="num">£${fmt0(grandRec)}/yr</td>`;
+  body.appendChild(grand);
+
+  body.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const idx = parseInt(e.target.dataset.idx);
+      const f = e.target.dataset.field;
+      const v = parseFloat(e.target.value);
+      if (!isFinite(v)) return;
+      state.unitOverrides[idx] = state.unitOverrides[idx] || {};
+      state.unitOverrides[idx][f] = v;
+      refresh();
+    });
+  });
+}
+
+function renderROI(r) {
+  const body = document.getElementById('roi-body');
+  body.innerHTML = '';
+  r.years.forEach(y => {
+    const tr = document.createElement('tr');
+    if (y.t === 0) tr.style.background = '#FFF8E1';
+    tr.innerHTML = `
+      <td><strong>${y.t}</strong></td>
+      <td class="num">${y.rev ? fmt2(y.rev/1e6) : '-'}</td>
+      <td class="num">${y.base ? fmt2(y.base/1e6) : '-'}</td>
+      <td class="num">${y.uplift ? fmt2(y.uplift/1e6) : '-'}</td>
+      <td class="num">${y.capex ? '−' + fmt2(y.capex/1e6) : '-'}</td>
+      <td class="num"><strong style="color:${y.netCF>=0?'var(--success)':'var(--warm)'}">${y.netCF >= 0 ? '' : '−'}${fmt2(Math.abs(y.netCF)/1e6)}</strong></td>
+      <td class="num">${fmt2(y.df).slice(0,5)}</td>
+      <td class="num">${y.discCF >= 0 ? '' : '−'}${fmt2(Math.abs(y.discCF)/1e6)}</td>
+      <td class="num"><strong style="color:${y.cumNPV>=0?'var(--success)':'var(--warm)'}">${y.cumNPV >= 0 ? '' : '−'}${fmt2(Math.abs(y.cumNPV)/1e6)}</strong></td>
+    `;
+    body.appendChild(tr);
+  });
+
+  document.getElementById('roi-N').textContent = state.life;
+  document.getElementById('r-aep').textContent = fmt0(r.aep_gwh);
+  document.getElementById('r-rev').textContent = fmt1(r.annualRev/1e6);
+  document.getElementById('r-opex').textContent = fmt1(r.annualOpexBaseline/1e6);
+  document.getElementById('r-margin').textContent = fmt1(r.annualNetMargin/1e6);
+  document.getElementById('r-npv').textContent = fmt0(r.npv/1e6);
+  document.getElementById('r-payback').textContent = r.payback === null ? 'never within the window' : (r.payback === 0 ? 'within Year 0' : `Year ${r.payback}`);
+
+  const ratio = r.npv / r.totalCapex;
+  document.getElementById('r-interpretation').innerHTML = `
+    The repair costs <strong>£${fmt2(r.totalCapex/1e6)}&nbsp;M</strong> upfront. After that, the farm runs for
+    <strong>${state.life} more years</strong>, earning <strong>£${fmt1(r.annualNetMargin/1e6)}&nbsp;M each year</strong>
+    in net margin after every operating cost. The NPV (total value in today's pounds) is
+    <strong>£${fmt0(r.npv/1e6)}&nbsp;M</strong>, which is <strong>${ratio.toFixed(0)} times the upfront spend</strong>.
+    The investment pays back in <strong>${r.payback === 0 ? 'Year 0' : 'Year ' + r.payback}</strong>.
+  `;
+}
+
+function renderLCOE(r) {
+  document.getElementById('lcoe-ours').textContent = fmt2(r.lcoe);
+  document.getElementById('lcoe-capex-pkw').textContent = fmt2(r.totalCapex / 700 / 1000);
+  const maxL = 124;
+  document.getElementById('bar-ours').style.width = Math.max(8, Math.min(100, r.lcoe / maxL * 100)) + '%';
+  document.getElementById('bar-ours').textContent = '£' + fmt1(r.lcoe);
+}
+
+function renderBottomLine(r) {
+  document.getElementById('bl-capex').textContent = fmt2(r.totalCapex/1e6);
+  document.getElementById('bl-capex-kw').textContent = fmt2(r.totalCapex / 700 / 1000);
+  const pct = r.totalCapex / 700 / 1000 / 3976 * 100;
+  document.getElementById('bl-pct').textContent = pct.toFixed(2);
+  document.getElementById('bl-payback').textContent = r.payback === null ? 'never within window' : (r.payback === 0 ? 'less than 1 year' : `${r.payback} year${r.payback>1?'s':''}`);
+  document.getElementById('bl-payback2').textContent = r.payback === null ? '...' : (r.payback === 0 ? 'under a year' : `about ${r.payback} year${r.payback>1?'s':''}`);
+  document.getElementById('bl-lcoe').textContent = fmt2(r.lcoe);
+  const ratio = 88.5 / r.lcoe;
+  document.getElementById('bl-lcoe-ratio').textContent = ratio.toFixed(1);
+  document.getElementById('bl-years').textContent = state.life;
+
+  const card = document.getElementById('verdict-card');
+  const icon = document.getElementById('verdict-icon');
+  const text = document.getElementById('verdict-text');
+
+  if (r.lcoe < 88.5 && r.npv > 0) {
+    card.className = 'finding-card success';
+    icon.textContent = '✓';
+    text.innerHTML = `Recommendation: <span style="color:var(--accent-dark)">EXTEND BY ${state.life} YEARS</span>`;
+  } else if (r.lcoe < 124) {
+    card.className = 'finding-card warning';
+    icon.textContent = '!';
+    text.innerHTML = `Verdict: <span style="color:var(--warm)">MARGINAL, REVIEW ASSUMPTIONS</span>`;
+  } else {
+    card.className = 'finding-card warning';
+    icon.textContent = '✗';
+    text.innerHTML = `Verdict: <span style="color:var(--warm)">NOT ECONOMIC</span>`;
   }
-  list.innerHTML = filtered.map(m => `
-    <div class="mat-card" onclick="addToMTO('${m.id}')">
-      <div class="cat-dot" style="background:${CAT_COLOURS[m.cat]||'#8fa0b8'}"></div>
-      <div class="mat-info">
-        <div class="mat-name">${m.name}</div>
-        <div class="mat-cat">${m.cat}</div>
-        <div class="mat-desc">${m.desc}</div>
-      </div>
-      <div class="mat-right">
-        <div class="mat-price">£${fmtPrice(m.price)}<span>/${m.unit}</span></div>
-        <button class="add-btn" onclick="event.stopPropagation();addToMTO('${m.id}')">+ Add</button>
-      </div>
+}
+
+function renderNarrative(r) {
+  const viName = viOptionLabels[state.viOption];
+  const viCost = viOptions[state.viOption];
+  const blName = blOptionLabels[state.blOption];
+  const blCost = blOptions[state.blOption];
+  const capexByCat = computeCapexByCat();
+  const totCapex = Object.values(capexByCat).reduce((a,b)=>a+b,0);
+  const avoided = ((3976 - r.totalCapex/700/1000) * 700 * 1000) / 1e6;
+
+  const html = `
+    <h3>9.1 Cost per mitigation measure</h3>
+    <p>The full mitigation programme costs <strong>£${fmt2(totCapex/1e6)}&nbsp;M</strong> upfront, plus
+    <strong>£${fmt0(r.recurring/1e3)}&nbsp;k each year</strong> in extra inspection costs. The breakdown by category:</p>
+    <ul>
+      <li><strong>Primary steel (vessel-impact repair and monitoring): £${fmt2(capexByCat['B.1']/1e6)}&nbsp;M.</strong>
+      The CAN07 dent is repaired by a ${viName} (£${fmt0(viCost)}), installed by divers with no offshore welding.
+      CAN05 and CAN06 get extra inspection, supplementary ICCP anodes, and Fibre-Bragg Grating strain sensors
+      to catch any future damage early.</li>
+      <li><strong>Secondary steel replacement: £${fmt2(capexByCat['B.2']/1e6)}&nbsp;M</strong>,
+      done over a 6-week summer 2026 campaign as per the team's Maintenance and Inspection Gantt
+      (20 July to 27 August).</li>
+      <li><strong>Boat-landing fender (${blName} at £${fmt0(blCost)} per turbine, across 50 turbines): £${fmt2(capexByCat['B.3']/1e6)}&nbsp;M.</strong></li>
+      <li><strong>Coatings and corrosion protection: £${fmt2(capexByCat['B.4']/1e6)}&nbsp;M.</strong>
+      ICCP anode replacement (the 30-year design life is up), a full boat-landing fender recoat
+      (the splash-zone allowance is exceeded at 10.3 mm measured), and localised spot repairs.</li>
+      <li><strong>Scour protection refill: £${fmt2(capexByCat['B.5']/1e6)}&nbsp;M.</strong>
+      41,160 t of armour rock and 20,580 t of filter rock from Findon quarry, hauled via Inverness in
+      34 train loads. Placement uses 16 rock-laying vessel transits, with 13 dredger transits for the
+      sand to refill the 4 m scour holes. Quantities come from Sophie and Manon's scour design.</li>
+      <li><strong>Recurring inspection (Category B.6): £${fmt0(r.recurring/1e3)}&nbsp;k each year.</strong>
+      Annual coating walk-overs, detailed splash-zone inspections every 2 to 3 years, 5-yearly ROV ICCP checks,
+      and post-storm bathymetric surveys, all per Manon's inspection plan.</li>
+    </ul>
+
+    <h3>9.2 Return on investment</h3>
+    <p>Over a <strong>${state.life}-year</strong> life extension, the farm produces
+    <strong>${fmt0(r.aep_gwh)}&nbsp;GWh each year</strong> (700 MW × ${(state.cf*100).toFixed(1)}% capacity factor).
+    At a wholesale price of <strong>£${state.price} per MWh</strong>, annual revenue is
+    <strong>£${fmt1(r.annualRev/1e6)}&nbsp;M</strong>. After baseline OPEX of
+    <strong>£${fmt1(r.annualOpexBaseline/1e6)}&nbsp;M each year</strong> (O&amp;M £${state.opexK} k per MW, insurance
+    £8.6 k per MW, connection and UoS £83.4 k per MW, all from Arup 2024) and the new inspection uplift of
+    <strong>£${fmt0(r.annualUplift/1e3)}&nbsp;k each year</strong>, the net margin is
+    <strong>£${fmt1(r.annualNetMargin/1e6)}&nbsp;M each year</strong>.</p>
+    <p>Discounted at 6.2% (Arup hurdle rate), the project NPV is <strong>£${fmt0(r.npv/1e6)}&nbsp;M</strong>,
+    with payback in <strong>${r.payback === 0 ? 'Year 0 itself' : 'Year ' + r.payback}</strong>.
+    NPV comes out at <strong>${(r.npv/r.totalCapex).toFixed(0)} times the upfront spend</strong>, a clear positive
+    benefit-cost ratio.</p>
+
+    <h3>9.3 Economic outlook for the increased lifespan</h3>
+    <p>The life-extension LCOE is <strong>£${fmt2(r.lcoe)} per MWh</strong>, compared with new-build offshore-wind
+    LCOE of <strong>£55.4, £88.5 or £124.0 per MWh</strong> (Arup/DESNZ 2024 low, medium and high, Table 22).
+    On the medium benchmark, extending ACCRAR for ${state.life} years is roughly
+    <strong>${(88.5/r.lcoe).toFixed(1)} times cheaper per MWh than building new</strong>.</p>
+    <p>The economic case is strong because the big-ticket capex is already paid for. New-build capex is
+    £3,976 per kW (Arup Table 21). Our mitigation outlay is <strong>£${fmt2(r.totalCapex/700/1e3)} per kW</strong>,
+    roughly <strong>${(r.totalCapex/700/1e3/3976*100).toFixed(2)}% of new-build capex</strong>.
+    The existing onshore grid connection, OFTO assets, and seabed lease all stay in place. We do not need
+    to repeat the predevelopment spend (£216 per kW) or grid infrastructure spend (£937 per kW).</p>
+    <p>We chose the ${state.life}-year horizon because Rambøll's Meeting 3 verdict was that 15 years would
+    not survive on fatigue. The team's FLS results show every circumferential weld passes at ${state.life}
+    years with utilisation under 1.0 under the updated metocean conditions. Add the secondary-steel work,
+    the ICCP replacement, and the scour protection, and the structure should hold up for another decade.</p>
+    <p><strong>Recommendation:</strong> proceed with the ${state.life}-year life extension at a programme cost
+    of <strong>£${fmt2(r.totalCapex/1e6)}&nbsp;M</strong>. This produces an NPV of <strong>£${fmt0(r.npv/1e6)}&nbsp;M</strong>
+    and an extended-life LCOE of <strong>£${fmt2(r.lcoe)} per MWh</strong>, well below even the cheapest
+    new-build benchmark. The capital saving versus full repowering is roughly
+    <strong>£${fmt0(avoided)}&nbsp;M</strong> in avoided capex alone, before accounting for the embodied carbon
+    and decommissioning cost that would also be deferred.</p>
+
+    <div class="sources">
+      <strong>Sources.</strong> All scenario inputs are editable in the sidebar. Mitigation unit costs are
+      editable in the catalogue tab (yellow cells). Pricing benchmarks come from Arup/DESNZ 2024
+      'Renewable Energy Generation Cost &amp; Technical Assumptions, Offshore Wind' (2023 real prices,
+      Tables 15, 19, 21, 22). Scour material quantities and transport plan come from the team's Scour
+      Design diameter calcs and Gantt v2. Vessel-impact repair options come from Vessel Impact.docx.
+      Maintenance schedule comes from the Maintenance Gantt. Figures are preliminary. Check the confidence
+      pills in the catalogue.
     </div>
-  `).join("");
+  `;
+  document.getElementById('narrative-content').innerHTML = html;
 }
 
-function fmtPrice(n) {
-  if (n < 100) return n.toFixed(2);
-  return Number(n).toLocaleString("en-GB", {maximumFractionDigits:0});
+function refresh() {
+  state.life = +document.getElementById('i-life').value;
+  state.price = +document.getElementById('i-price').value;
+  state.cf = +document.getElementById('i-cf').value;
+  state.opexK = +document.getElementById('i-opex').value;
+  state.rate = +document.getElementById('i-rate').value;
+  state.viOption = document.getElementById('i-vi-option').value;
+  state.blOption = document.getElementById('i-bl-option').value;
+
+  document.getElementById('v-life').textContent = state.life;
+  document.getElementById('v-cf').textContent = (state.cf*100).toFixed(1);
+  document.getElementById('v-rate').textContent = (state.rate*100).toFixed(1);
+
+  renderCatalogue();
+  const r = computeROI();
+  renderROI(r);
+  renderLCOE(r);
+  renderBottomLine(r);
+  renderNarrative(r);
 }
 
-function fmt(n) {
-  return "£" + Number(n).toLocaleString("en-GB", {minimumFractionDigits:0, maximumFractionDigits:0});
-}
+document.querySelectorAll('aside.scenario input, aside.scenario select').forEach(el => {
+  el.addEventListener('input', refresh);
+  el.addEventListener('change', refresh);
+});
 
-function addToMTO(id) {
-  const m = CATALOG.find(x => x.id === id);
-  if (!m) return;
-  const rid = ++rowId;
-  mto.push({ rid, id:m.id, name:m.name, unit:m.unit, price:m.price, qty:1, desc:"", src:m.src, notes:m.notes, cat:m.cat });
-  renderMTO();
-  toast("Added: " + (m.name.length > 40 ? m.name.slice(0,40)+"…" : m.name));
-}
+document.querySelectorAll('nav.section-nav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav.section-nav button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
 
-function removeRow(rid) {
-  mto = mto.filter(r => r.rid !== rid);
-  renderMTO();
-}
-
-function toggleExpand(rid) {
-  const el = document.getElementById("expand-" + rid);
-  el.classList.toggle("open");
-}
-
-function updateField(rid, field, val) {
-  const row = mto.find(r => r.rid === rid);
-  if (!row) return;
-  row[field] = field === "qty" || field === "price" ? parseFloat(val) || 0 : val;
-  // update line total label
-  const lt = (row.qty||0) * (row.price||0);
-  const el = document.getElementById("lt-" + rid);
-  if (el) el.textContent = fmt(lt);
-  recalc();
-}
-
-function renderMTO() {
-  const content = document.getElementById("mto-content");
-  document.getElementById("mto-count-badge").textContent = mto.length + " item" + (mto.length===1?"":"s");
-
-  if (mto.length === 0) {
-    content.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">Add materials from the catalogue<br>to build your MTO list</div></div>`;
-    document.getElementById("totals-panel").style.display = "none";
-    document.getElementById("actions").style.display = "none";
-    recalc();
-    return;
+document.querySelectorAll('.term').forEach(t => {
+  const def = t.getAttribute('data-def');
+  if (def) {
+    const box = document.createElement('span');
+    box.className = 'tip-box';
+    box.innerText = def;
+    t.appendChild(box);
   }
+});
 
-  const listHtml = mto.map(row => {
-    const lt = (row.qty||0) * (row.price||0);
-    const unitOpts = UNITS.map(u => `<option value="${u}" ${u===row.unit?"selected":""}>${u}</option>`).join("");
-    return `
-    <div class="mto-row" id="row-${row.rid}">
-      <div class="mto-row-head">
-        <div style="width:7px;height:7px;border-radius:50%;background:${CAT_COLOURS[row.cat]||'#8fa0b8'};flex-shrink:0;margin-top:2px"></div>
-        <div class="mto-row-name">${row.name}</div>
-        <div class="mto-row-total" id="lt-${row.rid}">${fmt(lt)}</div>
-        <div class="mto-row-btns">
-          <button class="icon-btn" onclick="toggleExpand(${row.rid})" title="Notes / source">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </button>
-          <button class="icon-btn danger" onclick="removeRow(${row.rid})" title="Remove">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-          </button>
-        </div>
-      </div>
-      <div class="mto-row-inputs">
-        <div class="input-group">
-          <span class="input-label">Quantity</span>
-          <input type="number" class="qty-input" value="${row.qty}" min="0" step="any"
-            oninput="updateField(${row.rid},'qty',this.value)" placeholder="0"/>
-        </div>
-        <div class="input-group">
-          <span class="input-label">Unit</span>
-          <select class="unit-select" onchange="updateField(${row.rid},'unit',this.value)">${unitOpts}</select>
-        </div>
-        <div class="input-group">
-          <span class="input-label">Unit price (£)</span>
-          <input type="number" class="price-input" value="${row.price}" min="0" step="any"
-            oninput="updateField(${row.rid},'price',this.value)" placeholder="0.00"/>
-        </div>
-        <div class="input-group" style="flex:1;min-width:100px">
-          <span class="input-label">Description / scope note</span>
-          <input type="text" class="desc-input" value="${row.desc}" placeholder="Add scope note…"
-            oninput="updateField(${row.rid},'desc',this.value)"/>
-        </div>
-      </div>
-      <div class="mto-expand" id="expand-${row.rid}">
-        <div class="mto-source"><strong>Source:</strong> ${row.src}</div>
-        ${row.notes ? `<div class="mto-source"><strong>Notes:</strong> ${row.notes}</div>` : ""}
-      </div>
-    </div>`;
-  }).join("");
+document.addEventListener('click', e => {
+  const t = e.target.closest('.term');
+  document.querySelectorAll('.term.open').forEach(el => { if (el !== t) el.classList.remove('open'); });
+  if (t) t.classList.toggle('open');
+});
 
-  content.innerHTML = `<div class="mto-list">${listHtml}</div>`;
-  document.getElementById("totals-panel").style.display = "block";
-  document.getElementById("actions").style.display = "flex";
-  recalc();
-}
-
-function recalc() {
-  const sub  = mto.reduce((s,r)=> s + (r.qty||0)*(r.price||0), 0);
-  const ofPct = parseFloat(document.getElementById("pct-offshore")?.value||25) / 100;
-  const coPct = parseFloat(document.getElementById("pct-cont")?.value||15) / 100;
-  const oa   = sub * ofPct;
-  const ca   = (sub + oa) * coPct;
-  const tot  = sub + oa + ca;
-
-  setText("stat-count", mto.length);
-  setText("stat-sub",   fmt(sub));
-  setText("stat-add",   fmt(oa + ca));
-  setText("stat-total", fmt(tot));
-  setText("t-sub",      fmt(sub));
-  setText("t-offshore", fmt(oa));
-  setText("t-cont",     fmt(ca));
-  setText("t-total",    fmt(tot));
-}
-
-function setText(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = val;
-}
-
-function clearMTO() {
-  if (mto.length === 0) return;
-  if (confirm("Clear all MTO items?")) { mto = []; renderMTO(); }
-}
-
-function exportCSV() {
-  const sub  = mto.reduce((s,r)=> s + (r.qty||0)*(r.price||0), 0);
-  const ofPct = parseFloat(document.getElementById("pct-offshore").value||25)/100;
-  const coPct = parseFloat(document.getElementById("pct-cont").value||15)/100;
-  const oa   = sub * ofPct;
-  const ca   = (sub + oa) * coPct;
-  const tot  = sub + oa + ca;
-
-  const hdr  = ["Item","Category","Scope Note","Quantity","Unit","Unit Price (GBP)","Line Total (GBP)","Source"].join(",");
-  const rows = mto.map(r => [
-    `"${r.name}"`, `"${r.cat}"`, `"${r.desc||''}"`,
-    r.qty, r.unit, r.price,
-    ((r.qty||0)*(r.price||0)).toFixed(2),
-    `"${r.src}"`
-  ].join(","));
-  const footer = [
-    `,,,,,,`,
-    `"Subtotal (Materials)",,,,,,${sub.toFixed(2)}`,
-    `"Offshore Uplift (${Math.round(ofPct*100)}%)",,,,,,${oa.toFixed(2)}`,
-    `"Contingency (${Math.round(coPct*100)}%)",,,,,,${ca.toFixed(2)}`,
-    `"TOTAL ESTIMATE",,,,,,${tot.toFixed(2)}`
-  ];
-  const csv  = [hdr, ...rows, ...footer].join("\n");
-  const blob = new Blob([csv], {type:"text/csv"});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement("a");
-  a.href = url; a.download = "ACCRAR_MTO_Pricing.csv"; a.click();
-  URL.revokeObjectURL(url);
-  toast("CSV exported successfully");
-}
-
-function toast(msg) {
-  const el = document.getElementById("toast");
-  document.getElementById("toast-msg").textContent = msg;
-  el.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
-}
+refresh();
 </script>
+
 </body>
 </html>
