@@ -765,15 +765,15 @@
         <table style="font-size:13px">
           <thead><tr><th>Resource</th><th class="num">£ / day</th><th>What it is used for here</th></tr></thead>
           <tbody>
-            <tr><td>Rock-dumping fall-pipe vessel</td><td class="num">150,000</td><td>Laying armour and filter rock around each monopile (16 transits, around 7 vessel days total)</td></tr>
-            <tr><td>Dredger (Damen TSHD 4000)</td><td class="num">100,000</td><td>Sucking up sand to refill the 4&nbsp;m scour holes (13 transits, around 6 vessel days)</td></tr>
+            <tr><td>Fall-pipe vessel (<em>Adhémar de Saint-Venant</em> or equiv., Jan De Nul)</td><td class="num">150,000</td><td>Laying armour and filter rock around each monopile. 16 rotations × 10h30 each; 2 vessels in parallel (one offshore, one loading at Inverness port), ≈35 combined vessel-days over 22-day campaign</td></tr>
+            <tr><td>Dredger (<em>Damen TSHD 4000 Multi-Purpose</em>, 4,300 m³ hopper)</td><td class="num">100,000</td><td>Dredging sand from offshore borrow areas to refill the 4&nbsp;m scour holes. 12 full + 1 partial rotations × ~11h each, ≈16 vessel-days over 1–17 Jul campaign</td></tr>
             <tr><td><span class="term" data-def="A jack-up vessel is a ship with retractable legs that drop to the seabed and lift the hull above the waves, creating a stable working platform. Expensive, only needed for heavy lifts.">Jack-up vessel<span class="q">?</span></span></td><td class="num">200,000</td><td>Only needed if the grouted sleeve option is chosen for CAN07</td></tr>
             <tr><td><span class="term" data-def="SOV stands for Service Operation Vessel. A larger ship with onboard accommodation for the technicians, so they live on it for the 6-week campaign instead of going back to shore each evening.">SOV<span class="q">?</span></span></td><td class="num">60,000</td><td>Accommodation and crew transfer for the 6-week secondary-steel campaign</td></tr>
-            <tr><td><span class="term" data-def="CTV stands for Crew Transfer Vessel. A small fast boat for day trips. Used here for daily personnel transport from shore (a 32 minute boat ride each way).">CTV<span class="q">?</span></span></td><td class="num">3,500</td><td>Daily personnel transfers (32 min each way)</td></tr>
-            <tr><td><span class="term" data-def="ROV stands for Remotely Operated Vehicle. An unmanned submarine controlled from the surface, carrying cameras and tools for underwater inspection.">ROV<span class="q">?</span></span> spread</td><td class="num">25,000</td><td>Underwater inspection and installing FBG sensors on CAN05</td></tr>
+            <tr><td><span class="term" data-def="CTV stands for Crew Transfer Vessel. A small fast boat for day trips between shore and the turbines. The BMT 27m model selected has an active fender system that lets it berth in higher sea states (top speed 25 kn → 32 min from shore).">BMT 27 m WFSV<span class="q">?</span></span> (CTV)</td><td class="num">3,500</td><td>Daily personnel transfers, 32 min each way at 25 kn (Report §11)</td></tr>
+            <tr><td><span class="term" data-def="ROV stands for Remotely Operated Vehicle. An unmanned submarine controlled from the surface, carrying cameras and tools for underwater inspection.">ROV<span class="q">?</span></span> spread (work-class)</td><td class="num">25,000</td><td>Underwater inspection of monopile, scour, and CP system; supports anode replacement at depth</td></tr>
             <tr><td>Diver spread (saturation)</td><td class="num">35,000</td><td>Installing the bolted clamp on CAN07 and the BL fender clamp on all 50 turbines</td></tr>
-            <tr><td>Survey vessel (Kongsberg EM2040)</td><td class="num">20,000</td><td>Post-storm bathymetric scour surveys</td></tr>
-            <tr><td>Rope-access crew</td><td class="num">8,000</td><td>Above-water coating and inspection work</td></tr>
+            <tr><td>Survey vessel (Kongsberg EM2040 MkII multibeam)</td><td class="num">20,000</td><td>Pre/post-placement bathymetric surveys + post-storm scour monitoring (0.06 m depth accuracy at 63 m)</td></tr>
+            <tr><td>Rope-access crew (IRATA L1/L2/L3 + NDT + ICorr CP)</td><td class="num">8,000</td><td>Above-water coating, anchor-point install, GRP grating, guardrail, davit crane, electrical work (per Secondary Steel Repair Timeline Notes)</td></tr>
           </tbody>
         </table>
       </div>
@@ -1069,8 +1069,8 @@
   <h3>Revenue side</h3>
   <div class="field">
     <label>Electricity price (£/MWh)</label>
-    <input type="number" id="i-price" value="85" step="1">
-    <div class="field-hint">Arup/DESNZ 2024 blended LCOE benchmark (2023 real). For sense-check: UK CfD AR6 strike £73–82/MWh; 2024 wholesale ~£75/MWh. Cite explicitly in final report.</div>
+    <input type="number" id="i-price" value="75" step="1">
+    <div class="field-hint">UK Day-Ahead wholesale 2024 average (~£75/MWh, Ofgem). Right benchmark for an out-of-CfD asset selling into the market. Compare to new-build CfD AR6 strike £73–82/MWh and Arup blended LCOE benchmark £88.5/MWh.</div>
   </div>
   <div class="field">
     <label>Capacity factor (Year 1)</label>
@@ -1174,7 +1174,7 @@ const measures = [
   {cat:'B.6', name:'Splash-zone coating detailed inspection (every 2–3 yrs)', qtyPerTurb:0.4, nTurb:50, cost:0, recPerUnit:5000, status:'estimate', src:'Corrosion.docx; averaged across 2.5 yrs.'},
   {cat:'B.6', name:'Submerged ICCP and coating (every 5 yrs)', qtyPerTurb:0.2, nTurb:50, cost:0, recPerUnit:15000, status:'estimate', src:'Corrosion.docx; ROV or diver per turbine-visit.'},
   {cat:'B.6', name:'CP potential reference electrode survey (every 5 yrs)', qtyPerTurb:0.2, nTurb:50, cost:0, recPerUnit:3500, status:'estimate', src:'Corrosion.docx; reference electrode survey averaged.'},
-  {cat:'B.6', name:'Blade-bug NDT inspection (annual, 2-wk campaign)', qtyPerTurb:1, nTurb:1, cost:0, recPerUnit:250000, status:'estimate', src:'Report §11; Bladebug ultrasonic NDT, 3 turbines/day × 2 wks for 50 turbines = 10 working days × ~£25k/day (CTV + bug ops).'},
+  {cat:'B.6', name:'Blade-bug NDT inspection (annual, 2-wk campaign)', qtyPerTurb:1, nTurb:1, cost:0, recPerUnit:250000, status:'estimate', src:'Report §11; Bladebug ultrasonic NDT carried by BMT 27 m WFSV CTV (32 min transit), 3 turbines/day × 2 wks for 50 turbines = 10 working days × ~£25k/day (CTV + bug ops).'},
   {cat:'B.6', name:'Post-storm bathymetric + ROV survey', qtyPerTurb:1, nTurb:1, cost:0, recPerUnit:80000, status:'estimate', src:'Inspection Plan: Kongsberg EM2040 MkII echo sounder + ROV (Subsea-Tech), 2-day campaign + survey vessel £20k/day.'},
 ];
 
@@ -1193,7 +1193,7 @@ const blOptionLabels = { clamp:'bolted clamp', weld:'weld and recoat', replace:'
 const viOptionLabels = { clamp:'bolted clamp', cfrp:'CFRP wrap', grouted:'grouted sleeve' };
 
 const state = {
-  life: 10, price: 85, cf: 0.505, opexK: 46.5, rate: 0.062,
+  life: 10, price: 75, cf: 0.505, opexK: 46.5, rate: 0.062,
   viOption: 'clamp', blOption: 'clamp',
   downtimeMonths: 1,
   cfDeclinePct: 0.5,        // % per year availability/CF decline over the extension period
