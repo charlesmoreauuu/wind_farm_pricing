@@ -85,43 +85,102 @@
     position: sticky;
     top: 24px;
     align-self: start;
-    background: var(--panel);
-    border: 1px solid var(--line);
+    background: #FBF7EE;
+    border: 1px solid #E8E0CC;
     border-radius: 14px;
-    padding: 20px 22px;
+    padding: 22px 22px 26px;
     box-shadow: var(--shadow);
     max-height: calc(100vh - 48px);
     overflow-y: auto;
   }
   aside.scenario h3 {
-    font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase;
+    font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase;
     color: var(--accent-dark); margin: 0 0 14px; font-weight: 700;
+    padding-bottom: 6px; border-bottom: 1px solid #E8E0CC;
   }
-  aside.scenario h3:not(:first-child) { margin-top: 22px; }
-  .field { margin-bottom: 14px; }
+  aside.scenario h3:not(:first-child) { margin-top: 24px; }
+  .field { margin-bottom: 18px; }
   .field label {
-    display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px;
+    display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--ink);
   }
   .field .field-hint {
-    font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.45;
+    font-size: 11.5px; color: var(--ink-soft); margin-top: 6px; line-height: 1.5;
   }
   .field input[type=number], .field select {
-    width: 100%; padding: 7px 10px;
-    border: 1px solid var(--line); border-radius: 6px;
+    width: 100%; padding: 8px 11px;
+    border: 1px solid #D6CFB8; border-radius: 6px;
     font-family: inherit; font-size: 13.5px;
-    background: var(--highlight);
+    background: #FFFCEF;
+    color: var(--ink);
+    transition: border-color 0.15s, background 0.15s;
   }
-  .field select { background: white; }
+  .field select { background: #FFFCEF; cursor: pointer; }
   .field input[type=number]:focus, .field select:focus {
-    outline: none; border-color: var(--accent);
+    outline: none; border-color: var(--accent); background: #FFFFFF;
   }
-  .field input[type=range] { width: 100%; accent-color: var(--accent); }
-  .range-row { display: flex; align-items: center; gap: 10px; }
+
+  /* Range sliders — cross-browser styled because accent-color alone leaves the track invisible */
+  .field input[type=range], .range-row input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 22px;
+    background: transparent;
+    cursor: pointer;
+    margin: 4px 0;
+  }
+  /* Webkit (Safari, Chrome, Edge) */
+  .field input[type=range]::-webkit-slider-runnable-track,
+  .range-row input[type=range]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--pct, 0%), #E0D8C2 var(--pct, 0%), #E0D8C2 100%);
+    border-radius: 4px;
+  }
+  .field input[type=range]::-webkit-slider-thumb,
+  .range-row input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 18px; width: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 1px 3px rgba(44,62,80,0.25);
+    margin-top: -6px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .field input[type=range]:hover::-webkit-slider-thumb,
+  .range-row input[type=range]:hover::-webkit-slider-thumb { background: var(--accent-dark); transform: scale(1.08); }
+  .field input[type=range]:focus, .range-row input[type=range]:focus { outline: none; }
+  .field input[type=range]:focus::-webkit-slider-thumb,
+  .range-row input[type=range]:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(42,157,143,0.18), 0 1px 3px rgba(44,62,80,0.25);
+  }
+  /* Firefox */
+  .field input[type=range]::-moz-range-track,
+  .range-row input[type=range]::-moz-range-track {
+    height: 6px; background: #E0D8C2; border-radius: 4px;
+  }
+  .field input[type=range]::-moz-range-progress,
+  .range-row input[type=range]::-moz-range-progress {
+    height: 6px; background: var(--accent); border-radius: 4px;
+  }
+  .field input[type=range]::-moz-range-thumb,
+  .range-row input[type=range]::-moz-range-thumb {
+    height: 16px; width: 16px; border-radius: 50%;
+    background: var(--accent); border: 2px solid #FFFFFF;
+    box-shadow: 0 1px 3px rgba(44,62,80,0.25);
+    cursor: pointer;
+  }
+
+  .range-row { display: flex; align-items: center; gap: 12px; }
   .range-row input[type=range] { flex: 1; }
   .range-row .val {
-    font-weight: 700; min-width: 56px; text-align: right;
+    font-weight: 700; min-width: 64px; text-align: right;
     color: var(--accent-dark); font-size: 14px;
     font-variant-numeric: tabular-nums;
+    background: #FFFFFF; padding: 4px 8px; border-radius: 5px;
+    border: 1px solid #E8E0CC;
   }
 
   .findings { margin-bottom: 36px; }
@@ -417,6 +476,62 @@
     .lcoe-bar .name { grid-column: 1 / -1; }
     .panel-section .question { font-size: 24px; }
   }
+
+  .tornado { margin-top: 24px; }
+  .tornado-row { display: grid; grid-template-columns: 200px 1fr 120px; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .tornado-row .lbl { font-size: 13.5px; color: var(--ink); }
+  .tornado-row .lbl small { display: block; font-size: 11px; color: var(--muted); }
+  .tornado-row .bar-wrap { position: relative; height: 26px; background: #F3F1EC; border-radius: 4px; overflow: hidden; }
+  .tornado-row .axis { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--ink-soft); opacity: 0.4; }
+  .tornado-row .bar-low, .tornado-row .bar-high { position: absolute; top: 3px; bottom: 3px; }
+  .tornado-row .bar-low { background: var(--warm); right: 50%; border-radius: 4px 0 0 4px; }
+  .tornado-row .bar-high { background: var(--success); left: 50%; border-radius: 0 4px 4px 0; }
+  .tornado-row .range { font-size: 12px; color: var(--ink-soft); text-align: right; font-variant-numeric: tabular-nums; }
+
+  .carbon-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; margin-top: 18px; box-shadow: var(--shadow); }
+  .carbon-card .big { font-family: Georgia, serif; font-size: 38px; color: var(--accent-dark); margin: 6px 0 10px; line-height: 1.1; }
+  .carbon-card .big small { display: block; font-size: 13px; color: var(--ink-soft); font-family: -apple-system, sans-serif; font-weight: 400; margin-top: 4px; }
+  .carbon-row { display: grid; grid-template-columns: 1fr 130px 160px; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .carbon-row:last-child { border-bottom: 0; }
+  .carbon-row .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .opt-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 8px; }
+  .opt-table th, .opt-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .opt-table th { font-weight: 600; color: var(--ink-soft); background: #FAF6EF; text-transform: uppercase; font-size: 11px; letter-spacing: 0.6px; }
+  .opt-table td:first-child { width: 90px; font-family: Georgia, serif; font-size: 15px; }
+  .opt-table td:first-child small { display: block; font-size: 11px; color: var(--muted); font-family: inherit; margin-top: 2px; }
+  .opt-table tr.opt-recommended { background: #F2FAF7; }
+  .opt-table tr.opt-recommended td { border-bottom-color: var(--accent); }
+  .opt-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .scenario-stamp { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px; padding: 10px 14px; background: #FAF6EF; border: 1px solid var(--line); border-radius: 8px; font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .scenario-stamp .chip { white-space: nowrap; }
+  .scenario-stamp .chip strong { color: var(--ink); font-weight: 600; }
+  .scenario-stamp .chip.flag { color: var(--warm); font-weight: 600; }
+
+  .tools-bar { display: flex; gap: 8px; margin: 16px 0 4px; flex-wrap: wrap; }
+  .tools-bar button { background: var(--panel); border: 1px solid var(--line); color: var(--ink); padding: 7px 14px; font-size: 12.5px; border-radius: 6px; cursor: pointer; font-family: inherit; }
+  .tools-bar button:hover { background: var(--highlight); border-color: var(--highlight-edge); }
+  .tools-bar button .ic { display: inline-block; margin-right: 4px; }
+
+  .mto-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  .mto-table th, .mto-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); }
+  .mto-table th { font-weight: 600; color: var(--ink-soft); background: #FAF6EF; text-transform: uppercase; font-size: 11px; letter-spacing: 0.6px; }
+  .mto-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .mto-table .mto-cat-row td { background: #F3F1EC; font-weight: 600; color: var(--ink); font-size: 12.5px; }
+  .mto-table tfoot td { font-weight: 700; background: #FAF6EF; border-top: 2px solid var(--ink-soft); }
+
+  @media print {
+    body { background: #fff; font-size: 11pt; }
+    header.hero, footer { page-break-after: avoid; }
+    .scenario { display: none !important; }
+    .layout { grid-template-columns: 1fr !important; }
+    nav.section-nav, .tools-bar { display: none !important; }
+    .panel-section { display: block !important; page-break-inside: avoid; margin-top: 28px; border-top: 1px solid #999; padding-top: 14px; }
+    .panel-section h2.question::before { content: '§ '; color: #666; }
+    .tip, .info-card { background: #fff !important; border-color: #ccc !important; }
+    a[href]::after { content: ''; }
+  }
 </style>
 </head>
 <body>
@@ -424,7 +539,7 @@
 <div class="container">
 
 <header class="hero">
-  <div class="crumbs">Charles &amp; Jean · CIVE60001 Group 3 · 2026-06-03</div>
+  <div class="crumbs">Charles &amp; Jean · CIVE60001 Group 3 · last updated <span id="stamp-date">2026-06-05</span></div>
   <h1>Is fixing the 24-year-old wind farm cheaper than building a new one?</h1>
   <p class="lede">
     The <strong>ACCRAR wind farm</strong> has 50 turbines, 700&nbsp;MW of capacity, and sits 25&nbsp;km off the east coast of Scotland.
@@ -433,6 +548,10 @@
   </p>
   <div class="tip">
     Hover any underlined term for a definition. Move the sliders to try different scenarios.
+    All monetary figures are in <strong>2023 real prices</strong> (Arup/DESNZ basis); no inflation applied to the cashflow.
+  </div>
+  <div class="scenario-stamp" id="scenario-stamp" aria-label="Current scenario assumptions">
+    <span class="chip">Scenario:</span>
   </div>
 </header>
 
@@ -503,17 +622,32 @@
     <button data-tab="logistics">How the rocks and crews get there</button>
     <button data-tab="roi">Does it pay back?</button>
     <button data-tab="lcoe">Cheaper than new?</button>
+    <button data-tab="options">Options A–E</button>
+    <button data-tab="sensitivity">What if we are wrong?</button>
+    <button data-tab="mto">Material Take-Off</button>
     <button data-tab="narrative">The full writeup</button>
   </nav>
 
   <section class="panel-section active" id="tab-catalogue">
     <h2 class="question">What needs fixing, and what does it cost?</h2>
     <p class="intro">
-      25 items across 6 categories. Edit any yellow cell to see how totals shift. The pill on each row
+      Items across 6 categories. Edit any yellow cell to see how totals shift. The pill on each row
       says where the number came from: <span class="pill confirmed">confirmed</span> from a team document,
       <span class="pill estimate">estimate</span> an industry benchmark, or
       <span class="pill team">team</span> a team calc or pending decision.
     </p>
+
+    <div class="tools-bar">
+      <button onclick="exportCSV('catalogue')"><span class="ic">⤓</span>Download CSV</button>
+      <button onclick="window.print()"><span class="ic">⎙</span>Print this page</button>
+    </div>
+
+    <div class="info-card" style="margin-top:14px">
+      <h4>Why the totals may be conservative</h4>
+      <p style="font-size:14px;line-height:1.65;color:var(--ink);margin:0">
+        Rambøll Meeting 3 specifically advised: <em>"Combine activities where possible."</em> This catalogue prices each measure as a standalone activity (separate IRATA crew mobilisations, separate vessel transits). In practice the secondary-steel campaign and the coatings campaign would share crews, vessels, mobilisation cost and weather windows — a realistic bundling discount on labour and mobilisation is <strong>~5–10%</strong>, which the current totals do not apply. If you want to model bundling, reduce the campaign labour line by that percentage and re-run.
+      </p>
+    </div>
 
     <h3 style="font-family:Georgia,serif;font-size:18px;margin-top:24px;color:var(--ink)">
       Fixing the boat-strike dent on CAN07
@@ -647,16 +781,21 @@
   </section>
 
   <section class="panel-section" id="tab-roi">
-    <h2 class="question">Does the £9&nbsp;M spend earn itself back?</h2>
+    <h2 class="question">Does the £<span id="roi-q-capex">…</span>&nbsp;M spend earn itself back?</h2>
     <p class="intro">
       Year 0 is when we spend the
       <span class="term" data-def="CAPEX stands for Capital Expenditure: the one-off upfront cost, paying for the bolted clamp, the rocks, the new lights, and so on.">CAPEX<span class="q">?</span></span>
-      to do the repairs. Years 1 through <span id="roi-N">10</span> are when the farm keeps running, earning revenue
+      to do the repairs and lose part of a year of revenue to downtime. Years 1 through <span id="roi-N">10</span> are when the farm keeps running, earning revenue
       from electricity and paying its usual operating costs. We
       <span class="term" data-def="Discounting adjusts future cashflows down because money today is worth more than money tomorrow (you could invest it). At 6.2% per year, £1 received in 5 years is worth about £0.74 today. Discount factor: 1 divided by (1 + rate) to the power of years.">discount<span class="q">?</span></span>
-      every future cashflow back to today's value at 6.2%. The sum is the
+      every future cashflow back to today's value at the user-selected rate. The sum is the
       <span class="term" data-def="NPV stands for Net Present Value: the total project value in today's pounds. A positive NPV means the project beats just leaving the money in a 6.2%-return alternative. Bigger is better.">NPV<span class="q">?</span></span>.
     </p>
+
+    <div class="tools-bar">
+      <button onclick="exportCSV('roi')"><span class="ic">⤓</span>Download CSV</button>
+      <button onclick="window.print()"><span class="ic">⎙</span>Print this page</button>
+    </div>
 
     <div style="overflow-x:auto;margin-top:18px">
     <table id="roi-table">
@@ -745,6 +884,157 @@
     </div>
   </section>
 
+  <section class="panel-section" id="tab-options">
+    <h2 class="question">How does Option C compare with the alternatives?</h2>
+    <p class="intro">
+      Progress Report §13 lays out five life-extension options. All five are run through the same NPV/LCOE engine
+      below using the current scenario inputs, so the recommendation rises out of the numbers rather than being asserted.
+      Option C row is highlighted because Report §13.2 selects it.
+    </p>
+
+    <div style="overflow-x:auto;margin-top:18px">
+      <table class="opt-table" id="opt-table">
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Scope</th>
+            <th>Life</th>
+            <th class="num">CAPEX (farm)</th>
+            <th class="num">NPV (today's £)</th>
+            <th class="num">LCOE (£/MWh)</th>
+          </tr>
+        </thead>
+        <tbody id="opt-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="info-card" style="margin-top:18px">
+      <h4>Option D: where the £<span id="opt-d-extra">…</span> M extra goes</h4>
+      <p style="font-size:13.5px;line-height:1.65;color:var(--ink);margin:0">
+        Option D adds full major-component refurbishment <em>on top of</em> Option C:
+        50 × gearboxes @ £750 k = £37.5 M,
+        50 × generators @ £400 k = £20 M,
+        50 × transformers @ £200 k = £10 M,
+        150 × blade refurbishment (leading-edge erosion + lightning-protection renewal) @ £150 k = £22.5 M,
+        SCADA modernisation £5 M.
+        This is justifiable only if the major mechanical components turn out to be near end-of-life on inspection,
+        which today's condition assessments do not indicate. Rambøll Meeting 3 explicitly noted this trade-off.
+      </p>
+    </div>
+
+    <h3 style="font-family:Georgia,serif;font-size:20px;margin-top:32px;color:var(--ink)">Cut-off criteria gate (Report §13.1)</h3>
+    <p style="font-size:14px;color:var(--ink-soft);max-width:780px;margin-bottom:4px">
+      Each option is tested against the five qualifying criteria from Report §13.1. The "score" column at the right
+      counts ticks. <strong>Only Option C passes every applicable criterion</strong>, which is what makes it the
+      recommended path under DNVGL-ST-0262 lifetime extension methodology.
+    </p>
+
+    <div style="overflow-x:auto;margin-top:14px">
+      <table class="opt-table">
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th class="num">Defects repairable</th>
+            <th class="num">Scour rectified</th>
+            <th class="num">Components replaceable</th>
+            <th class="num">Cheaper than replacement</th>
+            <th class="num">Gains &gt;10 yrs</th>
+            <th class="num">Score</th>
+          </tr>
+        </thead>
+        <tbody id="cutoff-tbody"></tbody>
+      </table>
+    </div>
+
+    <p style="font-size:12.5px;color:var(--muted);margin-top:8px">
+      "n/a" appears where the criterion does not apply to that option (e.g. Option E does not need to repair defects because it replaces the asset).
+      Assessment methodology follows <strong>DNVGL-ST-0262</strong> (Lifetime Extension of Wind Turbines).
+    </p>
+
+    <h3 style="font-family:Georgia,serif;font-size:20px;margin-top:32px;color:var(--ink)">Carbon comparison vs Option E (new build)</h3>
+    <p style="font-size:14px;color:var(--ink-soft);max-width:780px">
+      Embodied carbon avoided by extending the existing structure instead of building new. Indicative figures based on Wagner et al. (2024) life-cycle assessment for fixed-bottom offshore wind: ~700 kg CO₂e per kW of installed capacity for new build (steel, concrete, cabling, installation), versus negligible material carbon for targeted repairs.
+    </p>
+
+    <div class="carbon-card">
+      <div style="font-size:12px;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase">Avoided embodied CO₂ vs Option E</div>
+      <div class="big"><span id="carb-avoided">…</span> tonnes CO₂e<small>≈ <span id="carb-cars">…</span> UK cars taken off the road for 10 yrs</small></div>
+      <div class="carbon-row" style="border-top:1px solid var(--line);margin-top:6px"><div><strong>Option A — Do Nothing</strong></div><div class="num">~0</div><div class="num">no avoided carbon</div></div>
+      <div class="carbon-row"><div><strong>Option C — Life extension (this study)</strong></div><div class="num">~<span id="carb-c">…</span> t</div><div class="num">repair steel, transport</div></div>
+      <div class="carbon-row"><div><strong>Option E — New wind farm</strong></div><div class="num">~490,000 t</div><div class="num">700 MW × 700 kg/kW</div></div>
+    </div>
+
+    <div class="info-card" style="margin-top:14px">
+      <h4>Carbon-aware design choice already taken</h4>
+      <p style="font-size:13.5px;line-height:1.65;color:var(--ink);margin:0">
+        Report §10.4 documents an explicit carbon-driven design decision: an artificial-reef-block alternative for ~10 % of the armour layer (1,870 m³ of ARC Marine units) was assessed and <strong>rejected on transport-carbon grounds</strong> — manufactured in Torquay, Devon, the 700+ mile haul to Northern Scotland made it carbon- and cost-unfavourable vs. local rock from Findon quarry. This decision is consistent with the broader carbon argument for Option C over Option E.
+      </p>
+    </div>
+  </section>
+
+  <section class="panel-section" id="tab-sensitivity">
+    <h2 class="question">What if our key assumptions are wrong?</h2>
+    <p class="intro">
+      One-variable-at-a-time NPV sensitivity. Each bar shows project NPV when that single variable is swept ±20% from its base value, with everything else held constant. Longer bars = the assumption that matters most to the conclusion.
+    </p>
+
+    <div class="tornado" id="tornado-body"></div>
+
+    <div class="info-card" style="margin-top:24px">
+      <h4>How to read this</h4>
+      <p style="font-size:14px;line-height:1.65;color:var(--ink);margin:0">
+        The axis line is the base-case NPV (currently <strong>£<span id="sens-base">…</span> M</strong>).
+        The <span style="color:var(--warm)">red</span> bar shows the NPV at the unfavourable sensitivity (–20%), the <span style="color:var(--success)">green</span> bar shows the favourable case (+20%). For CAPEX the directions flip (less CAPEX is favourable). The longest bars dominate the result and should receive the most attention in your final report. If the red bar never crosses zero, the conclusion is robust to that assumption.
+      </p>
+    </div>
+  </section>
+
+  <section class="panel-section" id="tab-mto">
+    <h2 class="question">Material Take-Off (MTO) summary</h2>
+    <p class="intro">
+      Whole-farm material quantities for procurement and the report drawings package. Sourced from the
+      catalogue (qty × turbines) plus the Scour Design diameter calcs and the Damage Index spreadsheet.
+      This is the Gantt deliverable for Charles &amp; Jean; the same numbers feed the General WTG Arrangement drawings.
+    </p>
+
+    <div class="tools-bar">
+      <button onclick="exportCSV('mto')"><span class="ic">⤓</span>Download CSV</button>
+      <button onclick="window.print()"><span class="ic">⎙</span>Print this page</button>
+    </div>
+
+    <div style="overflow-x:auto;margin-top:14px">
+      <table class="mto-table" id="mto-table">
+        <thead>
+          <tr>
+            <th style="width:50px">Cat</th>
+            <th>Material / item</th>
+            <th class="num" style="width:120px">Total quantity</th>
+            <th style="width:80px">Unit</th>
+            <th class="num" style="width:110px">Indicative mass</th>
+            <th>Source / notes</th>
+          </tr>
+        </thead>
+        <tbody id="mto-body"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" style="text-align:right">Total mass moved / installed:</td>
+            <td class="num" id="mto-total-mass">…</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="info-card" style="margin-top:18px">
+      <h4>Mass-to-CO₂ note</h4>
+      <p style="font-size:14px;line-height:1.65;color:var(--ink);margin:0">
+        Mass figures feed both the procurement summary and the embodied-carbon estimate in the
+        <em>Options A–E</em> tab. The dominant tonnage is scour rock and refill sand (over 150,000 t combined), which travels by rail from Findon to Inverness and then by fall-pipe vessel to each pile per the
+        <em>Storyboard Scour Protection Logistics</em>. The dominant steel mass is the boat-landing fender replacement section.
+      </p>
+    </div>
+  </section>
+
   <section class="panel-section" id="tab-narrative">
     <h2 class="question">The full writeup</h2>
     <p class="intro">
@@ -764,22 +1054,40 @@
       <input type="range" id="i-life" min="0" max="15" step="1" value="10">
       <span class="val"><span id="v-life">10</span> yr</span>
     </div>
-    <div class="field-hint">Rambøll: "cannot survive 15 years extra". 10 is the upper viable.</div>
+    <div class="field-hint" id="life-hint">Report §13.2 picks <strong>Option C</strong> (10–15 yrs achievable). Per DNVGL-ST-0262, beyond 10 yrs check weld FLS residual, NFA shift, and ICCP renewal interval.</div>
+  </div>
+
+  <div class="field">
+    <label>Year-0 repair downtime</label>
+    <div class="range-row">
+      <input type="range" id="i-downtime" min="0" max="9" step="0.5" value="1">
+      <span class="val"><span id="v-downtime">1</span> mo</span>
+    </div>
+    <div class="field-hint">Whole-farm equivalent generation loss during the repair campaign. Per the Maintenance Gantt, individual turbines stop only briefly while their crew works (~few days each), and many tasks run in parallel across multiple turbines. Default 1 month is the equivalent farm-wide loss; slide higher to test worst case.</div>
   </div>
 
   <h3>Revenue side</h3>
   <div class="field">
     <label>Electricity price (£/MWh)</label>
     <input type="number" id="i-price" value="85" step="1">
-    <div class="field-hint">Arup blended LCOE benchmark.</div>
+    <div class="field-hint">Arup/DESNZ 2024 blended LCOE benchmark (2023 real). For sense-check: UK CfD AR6 strike £73–82/MWh; 2024 wholesale ~£75/MWh. Cite explicitly in final report.</div>
   </div>
   <div class="field">
-    <label>Capacity factor</label>
+    <label>Capacity factor (Year 1)</label>
     <div class="range-row">
       <input type="range" id="i-cf" min="0.40" max="0.60" step="0.005" value="0.505">
       <span class="val"><span id="v-cf">50.5</span>%</span>
     </div>
-    <div class="field-hint">% of theoretical max output. Wind isn't always blowing.</div>
+    <div class="field-hint">Year-1 baseline. Arup Table 19 median 0.505 (range 0.460–0.561).</div>
+  </div>
+
+  <div class="field">
+    <label>Capacity factor annual decline</label>
+    <div class="range-row">
+      <input type="range" id="i-cfdecline" min="0" max="2" step="0.1" value="0.5">
+      <span class="val"><span id="v-cfdecline">0.5</span> %/yr</span>
+    </div>
+    <div class="field-hint">Availability & blade-erosion degradation over the extension. Default 0.5 %/yr appropriate for an asset already 24 yrs into operation; Option D would reset this.</div>
   </div>
 
   <h3>Cost side</h3>
@@ -826,44 +1134,48 @@
 </div>
 
 <footer>
-  ACCRAR Wind Farm Life Extension · Charles &amp; Jean · CIVE60001 Group 3 · drafted 2026-06-03 ·
-  Sources: project team files plus the Arup/DESNZ 2024 LCOE study
+  ACCRAR Wind Farm Life Extension · Charles &amp; Jean · CIVE60001 Group 3 · last updated 2026-06-05<br>
+  <strong>Standards:</strong> DNV-ST-0437 (Loads), DNV-RP-C212 (Soil), DNV-RP-C205 (Environment), DNV-RP-C203 (Fatigue), DNVGL-ST-0126 (Support Structures), DNV-RP-0618 (Rock Scour Protection), <strong>DNVGL-ST-0262 (Lifetime Extension of Wind Turbines)</strong>, BS EN ISO 12944-6 (Coatings)<br>
+  <strong>Economics:</strong> Arup/DESNZ 2024 <em>Renewable Energy Generation Cost &amp; Technical Assumptions, Offshore Wind</em> (2023 real prices) · Project team files in <em>Latest Project Folder 3/</em>
 </footer>
 
 <script>
 const measures = [
   {cat:'B.1', name:'CAN07 dent repair, chosen option', qtyPerTurb:1, nTurb:1, costKey:'viOption', status:'team', src:'Vessel Impact.docx, 3 options compared above'},
-  {cat:'B.1', name:'CAN06 enhanced inspection (annual recurring)', qtyPerTurb:1, nTurb:50, cost:0, recPerUnit:1500, status:'estimate', src:'Splash zone monitoring per Vessel Impact.docx'},
-  {cat:'B.1', name:'CAN06 ICCP anode supplement', qtyPerTurb:2, nTurb:50, cost:8000, status:'estimate', src:'Anode set plus diver install'},
-  {cat:'B.1', name:'CAN05 FBG monitoring sensors', qtyPerTurb:1, nTurb:50, cost:6000, status:'estimate', src:'Fibre-Bragg Grating plus acoustic emission'},
-  {cat:'B.1', name:'CAN05 coating spot maintenance', qtyPerTurb:1, nTurb:50, cost:1500, status:'estimate', src:'See B.4 epoxy rate'},
+  {cat:'B.1', name:'CAN06 enhanced inspection programme (annual)', qtyPerTurb:1, nTurb:50, cost:0, recPerUnit:1500, status:'team', src:'Vessel Impact.docx — CAN06 Option 1 (lower cost). ICCP enhancement (Option 2) is the alternative, not additive.'},
+  {cat:'B.1', name:'CAN05 coating spot maintenance', qtyPerTurb:1, nTurb:50, cost:1500, status:'team', src:'Vessel Impact.docx — CAN05 Option 2 chosen as long-term repair (FBG monitoring is short-term observation alternative, not additive).'},
 
-  {cat:'B.2', name:'Anchor points (fall-arrest)', qtyPerTurb:2, nTurb:50, cost:92, status:'confirmed', src:'£92 per unit, Damage Index xlsx'},
-  {cat:'B.2', name:'External lighting, aviation LED', qtyPerTurb:2, nTurb:50, cost:800, status:'estimate', src:'ICAO LED £400 to £1,200 midpoint'},
-  {cat:'B.2', name:'External lighting, marine nav (ATEX, solar)', qtyPerTurb:1, nTurb:50, cost:5000, status:'estimate', src:'£2k to £8k midpoint'},
-  {cat:'B.2', name:'GRP grating panel', qtyPerTurb:1, nTurb:50, cost:195, status:'confirmed', src:'£195 per unit, Damage Index xlsx'},
-  {cat:'B.2', name:'Davit crane support, clean and recoat', qtyPerTurb:1, nTurb:50, cost:8000, status:'estimate', src:'About 16h labour plus materials'},
-  {cat:'B.2', name:'Guardrails, abrasive blast and recoat', qtyPerTurb:1, nTurb:50, cost:2000, status:'estimate', src:'Spot repair'},
+  {cat:'B.2', name:'Anchor points (fall-arrest) — hardware', qtyPerTurb:2, nTurb:50, cost:92, status:'confirmed', src:'£92 per unit hardware, Damage Index xlsx. Install labour captured in campaign labour line below.'},
+  {cat:'B.2', name:'External lighting, aviation LED', qtyPerTurb:2, nTurb:50, cost:800, status:'estimate', src:'ICAO LED £400–£1,200 midpoint, install labour in campaign labour line.'},
+  {cat:'B.2', name:'External lighting, marine nav (ATEX, solar)', qtyPerTurb:1, nTurb:50, cost:5000, status:'estimate', src:'£2k–£8k midpoint per ATEX-rated unit.'},
+  {cat:'B.2', name:'GRP grating panel — hardware', qtyPerTurb:1, nTurb:50, cost:195, status:'confirmed', src:'£195 per panel, Damage Index xlsx.'},
+  {cat:'B.2', name:'Davit crane support, materials and consumables', qtyPerTurb:1, nTurb:50, cost:1500, status:'estimate', src:'Salt-removal kit, grease, coating consumables only; rope-access labour in campaign labour line.'},
+  {cat:'B.2', name:'Guardrails, abrasive blast and coating consumables', qtyPerTurb:1, nTurb:50, cost:400, status:'estimate', src:'Blast media + epoxy per turbine; labour in campaign labour line.'},
+  {cat:'B.2', name:'Secondary-steel campaign labour (IRATA crews + supervision)', qtyPerTurb:1, nTurb:1, cost:2400000, status:'estimate', src:'4 IRATA crews × ~60 working days × £8k/day per Vessel & Labour Rates and Secondary Steel Repair Timeline Notes (mob 1w + 5 task blocks of 2w + test 1.5w in Jul–Oct weather window).'},
+  {cat:'B.2', name:'Site mobilisation, portable genset (7–10 kVA diesel), permits', qtyPerTurb:1, nTurb:1, cost:120000, status:'estimate', src:'Per Secondary Steel Repair Timeline Notes equipment list and IRATA L3 sign-off requirement.'},
 
   {cat:'B.3', name:'Boat-landing fender, chosen option', qtyPerTurb:1, nTurb:50, costKey:'blOption', status:'team', src:'Corrosion.docx and Technical Fixes.docx'},
 
-  {cat:'B.4', name:'ICCP anode replacement (30 yr design life reached)', qtyPerTurb:1, nTurb:50, cost:15000, status:'estimate', src:'Corrosion.docx'},
-  {cat:'B.4', name:'Spot coating at MP dent (one turbine only)', qtyPerTurb:1, nTurb:1, cost:3000, status:'estimate', src:'Offshore epoxy'},
-  {cat:'B.4', name:'Full BL fender recoat (ISO 8501-1 blast plus epoxy)', qtyPerTurb:1, nTurb:50, cost:10000, status:'estimate', src:'Splash zone allowance exceeded'},
-  {cat:'B.4', name:'Intermediate platform spot repairs', qtyPerTurb:1, nTurb:50, cost:2000, status:'estimate', src:'Guardrail interfaces'},
+  {cat:'B.4', name:'ICCP anode replacement (30 yr design life reached)', qtyPerTurb:1, nTurb:50, cost:15000, status:'estimate', src:'Corrosion.docx — ICCP nearing end of 30-yr design life.'},
+  {cat:'B.4', name:'Spot coating at MP dent (one turbine only)', qtyPerTurb:1, nTurb:1, cost:3000, status:'estimate', src:'Offshore epoxy, localised at vessel-impact dent.'},
+  {cat:'B.4', name:'Transition Piece coating spot repairs (fleet-wide)', qtyPerTurb:1, nTurb:25, cost:3000, status:'estimate', src:'Corrosion.docx — TP splash zone measured 1.7 mm of 2.0 mm allowance ("approaching limit"). Spot repair on ~50% of fleet showing localised breakdown.'},
+  {cat:'B.4', name:'Full BL fender recoat (ISO 8501-1 blast plus epoxy)', qtyPerTurb:1, nTurb:50, cost:10000, status:'estimate', src:'Corrosion.docx — BL fender splash zone 10.3 mm of 9.9 mm allowance (exceeds). Full recoat required.'},
+  {cat:'B.4', name:'Intermediate platform spot repairs', qtyPerTurb:1, nTurb:50, cost:2000, status:'estimate', src:'Corrosion.docx — localised corrosion at guardrail interfaces.'},
 
-  {cat:'B.5', name:'Armour rock material (d50 0.14 m)', qtyPerTurb:823, nTurb:50, cost:30, status:'team', src:'41,160 t total ÷ 50 piles at £30/t'},
-  {cat:'B.5', name:'Filter rock material (d50 0.07 m)', qtyPerTurb:412, nTurb:50, cost:25, status:'team', src:'20,580 t total ÷ 50 piles at £25/t'},
-  {cat:'B.5', name:'Sand for scour-hole refill', qtyPerTurb:1812, nTurb:50, cost:15, status:'team', src:'90,597 t total. Supply or on-site dredge.'},
-  {cat:'B.5', name:'Rail transport (Findon to Inverness)', qtyPerTurb:0.68, nTurb:50, cost:15000, status:'team', src:'34 trains at £15k/train'},
-  {cat:'B.5', name:'Rock-laying vessel (16 transits)', qtyPerTurb:0.32, nTurb:50, cost:65000, status:'estimate', src:'7 days at £150k = £1.05M'},
-  {cat:'B.5', name:'Dredger vessel (13 transits)', qtyPerTurb:0.26, nTurb:50, cost:46000, status:'estimate', src:'6 days at £100k = £600k'},
+  {cat:'B.5', name:'Armour rock material (d₅₀ 0.14 m, Findon quarry nr Aberdeen)', qtyPerTurb:823, nTurb:50, cost:30, status:'team', src:'Report §10.4: 41,160 t total ÷ 50 piles, 18,709 m³ at ρ_rock 2,350 kg/m³.'},
+  {cat:'B.5', name:'Filter rock material (d₅₀ 0.07 m, Findon quarry)', qtyPerTurb:412, nTurb:50, cost:25, status:'team', src:'Report §10.4: 20,580 t total ÷ 50 piles, 9,355 m³ at ρ_rock 2,350 kg/m³.'},
+  {cat:'B.5', name:'Sand for scour-hole refill (dredged borrow area)', qtyPerTurb:1812, nTurb:50, cost:15, status:'team', src:'Report §10.1: 90,597 t total, quarter-torus geometry, 4 m scour depth, ρ_sand 1,500 kg/m³ submerged.'},
+  {cat:'B.5', name:'Rail transport — Findon to Inverness (33 train rotations)', qtyPerTurb:0.66, nTurb:50, cost:15000, status:'team', src:'Report §10.5: 11 filter + 22 armour = 33 train rotations × 25 wagons × 77 t (Touax Rail); 2 trains/day.'},
+  {cat:'B.5', name:'Fall-pipe vessel — vessel-days (Adhémar de Saint-Venant or equiv.)', qtyPerTurb:0.70, nTurb:50, cost:150000, status:'team', src:'Report §10.7: 16 rotations × 10h30 each, two vessels in parallel (one offshore + one loading at Inverness). ≈35 combined vessel-days at £150k/day (Vessel & Labour Rates). Liebherr 984 excavator at port, 1,000 t/hr load rate.'},
+  {cat:'B.5', name:'Dredger vessel — vessel-days (Damen TSHD 4000)', qtyPerTurb:0.32, nTurb:50, cost:100000, status:'estimate', src:'Report §10.2: Damen TSHD 4000 Multi-Purpose, 4,300 m³ hopper; 12 full + 1 partial rotations × ~11 h each over 1–17 Jul 2026. ~16 vessel-days at £100k/day.'},
+  {cat:'B.5', name:'Survey vessel — pre/post placement bathymetry (Kongsberg EM2040)', qtyPerTurb:1, nTurb:1, cost:60000, status:'estimate', src:'Inspection Plan: Kongsberg EM2040 MkII multibeam, 0.06 m depth accuracy at 63 m, 3 days × £20k/day (one survey before placement, one after).'},
 
-  {cat:'B.6', name:'Coating visual inspection (annual)', qtyPerTurb:1, nTurb:50, cost:0, recPerUnit:2000, status:'estimate', src:'Rope access per turbine visit'},
-  {cat:'B.6', name:'Splash-zone coating detailed (every 2 to 3 yrs)', qtyPerTurb:0.4, nTurb:50, cost:0, recPerUnit:5000, status:'estimate', src:'Averaged across 2.5 yrs'},
-  {cat:'B.6', name:'Submerged ICCP and coating (every 5 yrs)', qtyPerTurb:0.2, nTurb:50, cost:0, recPerUnit:15000, status:'estimate', src:'ROV or diver per turbine'},
-  {cat:'B.6', name:'CP potential reference electrode survey', qtyPerTurb:0.2, nTurb:50, cost:0, recPerUnit:3500, status:'estimate', src:'Every 5 yrs averaged'},
-  {cat:'B.6', name:'Post-storm bathymetric and ROV survey', qtyPerTurb:1, nTurb:1, cost:0, recPerUnit:80000, status:'estimate', src:'One campaign per year'},
+  {cat:'B.6', name:'Coating visual inspection (annual, above water)', qtyPerTurb:1, nTurb:50, cost:0, recPerUnit:2000, status:'estimate', src:'Corrosion.docx inspection plan; rope-access per turbine-visit.'},
+  {cat:'B.6', name:'Splash-zone coating detailed inspection (every 2–3 yrs)', qtyPerTurb:0.4, nTurb:50, cost:0, recPerUnit:5000, status:'estimate', src:'Corrosion.docx; averaged across 2.5 yrs.'},
+  {cat:'B.6', name:'Submerged ICCP and coating (every 5 yrs)', qtyPerTurb:0.2, nTurb:50, cost:0, recPerUnit:15000, status:'estimate', src:'Corrosion.docx; ROV or diver per turbine-visit.'},
+  {cat:'B.6', name:'CP potential reference electrode survey (every 5 yrs)', qtyPerTurb:0.2, nTurb:50, cost:0, recPerUnit:3500, status:'estimate', src:'Corrosion.docx; reference electrode survey averaged.'},
+  {cat:'B.6', name:'Blade-bug NDT inspection (annual, 2-wk campaign)', qtyPerTurb:1, nTurb:1, cost:0, recPerUnit:250000, status:'estimate', src:'Report §11; Bladebug ultrasonic NDT, 3 turbines/day × 2 wks for 50 turbines = 10 working days × ~£25k/day (CTV + bug ops).'},
+  {cat:'B.6', name:'Post-storm bathymetric + ROV survey', qtyPerTurb:1, nTurb:1, cost:0, recPerUnit:80000, status:'estimate', src:'Inspection Plan: Kongsberg EM2040 MkII echo sounder + ROV (Subsea-Tech), 2-day campaign + survey vessel £20k/day.'},
 ];
 
 const catLabels = {
@@ -883,6 +1195,8 @@ const viOptionLabels = { clamp:'bolted clamp', cfrp:'CFRP wrap', grouted:'groute
 const state = {
   life: 10, price: 85, cf: 0.505, opexK: 46.5, rate: 0.062,
   viOption: 'clamp', blOption: 'clamp',
+  downtimeMonths: 1,
+  cfDeclinePct: 0.5,        // % per year availability/CF decline over the extension period
   unitOverrides: {},
 };
 
@@ -904,7 +1218,6 @@ function computeCapexByCat() {
   const out = {};
   Object.keys(catLabels).forEach(c => out[c] = 0);
   measures.forEach((m, idx) => {
-    if (m.cat === 'B.6') return;
     const q = getQtyPerTurb(m, idx) * getNTurb(m, idx);
     out[m.cat] += q * getMeasureCost(m, idx);
   });
@@ -913,46 +1226,118 @@ function computeCapexByCat() {
 function computeRecurring() {
   let total = 0;
   measures.forEach((m, idx) => {
-    if (m.cat !== 'B.6') return;
+    if (!m.recPerUnit) return;
     const q = getQtyPerTurb(m, idx) * getNTurb(m, idx);
-    total += q * (m.recPerUnit || 0);
+    total += q * m.recPerUnit;
   });
   return total;
 }
-function computeROI() {
-  const totalCapex = Object.values(computeCapexByCat()).reduce((a,b)=>a+b,0);
+function computeRecurringByCat() {
+  const out = {};
+  Object.keys(catLabels).forEach(c => out[c] = 0);
+  measures.forEach((m, idx) => {
+    if (!m.recPerUnit) return;
+    const q = getQtyPerTurb(m, idx) * getNTurb(m, idx);
+    out[m.cat] += q * m.recPerUnit;
+  });
+  return out;
+}
+function computeOptionBCapex() {
+  // Option B = essential repairs = B.1 vessel-impact + B.2 secondary steel replace + B.3 fender + ICCP renewal portion of B.4
+  const cap = computeCapexByCat();
+  let iccpReplacement = 0;
+  measures.forEach((m, idx) => {
+    if (m.name && m.name.indexOf('ICCP anode replacement') >= 0) {
+      iccpReplacement = getQtyPerTurb(m, idx) * getNTurb(m, idx) * getMeasureCost(m, idx);
+    }
+  });
+  return cap['B.1'] + cap['B.2'] + cap['B.3'] + iccpReplacement;
+}
+function computeROI(opts) {
+  // Optional overrides for sensitivity sweeps
+  const o = opts || {};
+  const price = o.price !== undefined ? o.price : state.price;
+  const cf = o.cf !== undefined ? o.cf : state.cf;
+  const opexK = o.opexK !== undefined ? o.opexK : state.opexK;
+  const rate = o.rate !== undefined ? o.rate : state.rate;
+  const capexMult = o.capexMult !== undefined ? o.capexMult : 1;
+  const cfDeclinePct = state.cfDeclinePct;
+
+  const totalCapex = Object.values(computeCapexByCat()).reduce((a,b)=>a+b,0) * capexMult;
   const recurring = computeRecurring();
   const MW = 700;
-  const aep_gwh = MW * state.cf * 8760 / 1000;
-  const annualRev = aep_gwh * state.price * 1000;
-  const annualOpexBaseline = (state.opexK + 8.6 + 83.4) * MW * 1000;
+  const cfYear = (t) => Math.max(0, cf * (1 - cfDeclinePct/100 * Math.max(0, t - 1)));
+  const aepYear = (t) => MW * cfYear(t) * 8760 / 1000;
+  const aep_gwh = aepYear(1); // headline AEP, Year 1 baseline
+  const annualRev = aep_gwh * price * 1000;
+  const annualOpexBaseline = (opexK + 8.6 + 83.4) * MW * 1000;
   const annualUplift = recurring;
   const annualNetMargin = annualRev - annualOpexBaseline - annualUplift;
+  const uptimeY0 = Math.max(0, 1 - state.downtimeMonths / 12);
 
   const years = [];
   let cumNPV = 0;
   for (let t = 0; t <= state.life; t++) {
-    const df = 1 / Math.pow(1 + state.rate, t);
+    const df = 1 / Math.pow(1 + rate, t);
     let rev = 0, base = 0, uplift = 0, capex = 0;
-    if (t === 0) capex = totalCapex;
-    else { rev = annualRev; base = annualOpexBaseline; uplift = annualUplift; }
+    const aep_t = aepYear(t);
+    const revFull_t = aep_t * price * 1000;
+    if (t === 0) {
+      capex = totalCapex;
+      rev = aepYear(1) * price * 1000 * uptimeY0; // Year 0 generates fraction of Year-1 baseline
+      base = annualOpexBaseline;
+      uplift = 0;
+    } else {
+      rev = revFull_t; base = annualOpexBaseline; uplift = annualUplift;
+    }
     const netCF = rev - base - uplift - capex;
     const discCF = netCF * df;
     cumNPV += discCF;
     years.push({ t, rev, base, uplift, capex, netCF, df, discCF, cumNPV });
   }
   let discOpex = 0, discAEP_gwh = 0;
-  for (let t = 1; t <= state.life; t++) {
-    const df = 1 / Math.pow(1 + state.rate, t);
-    discOpex += (annualOpexBaseline + annualUplift) * df;
-    discAEP_gwh += aep_gwh * df;
+  for (let t = 0; t <= state.life; t++) {
+    const df = 1 / Math.pow(1 + rate, t);
+    if (t === 0) {
+      discOpex += annualOpexBaseline * df;
+      discAEP_gwh += aepYear(1) * uptimeY0 * df;
+    } else {
+      discOpex += (annualOpexBaseline + annualUplift) * df;
+      discAEP_gwh += aepYear(t) * df;
+    }
   }
-  const lcoe = (totalCapex + discOpex) / (discAEP_gwh * 1000);
+  const lcoe = discAEP_gwh > 0 ? (totalCapex + discOpex) / (discAEP_gwh * 1000) : Infinity;
+
+  // Fractional payback by linear interpolation between bracketing years
   let payback = null;
-  for (let i = 0; i < years.length; i++) {
-    if (years[i].cumNPV >= 0) { payback = i; break; }
+  if (years.length && years[0].cumNPV >= 0) {
+    payback = 0;
+  } else {
+    for (let i = 1; i < years.length; i++) {
+      if (years[i].cumNPV >= 0 && years[i-1].cumNPV < 0) {
+        const prev = years[i-1].cumNPV;
+        const curr = years[i].cumNPV;
+        const frac = (-prev) / (curr - prev);
+        payback = (i - 1) + frac;
+        break;
+      }
+    }
   }
-  return { totalCapex, recurring, aep_gwh, annualRev, annualOpexBaseline, annualUplift, annualNetMargin, years, npv: cumNPV, payback, lcoe };
+  return { totalCapex, recurring, aep_gwh, annualRev, annualOpexBaseline, annualUplift, annualNetMargin, years, npv: cumNPV, payback, lcoe, uptimeY0 };
+}
+
+function fmtPayback(p) {
+  if (p === null) return 'never within this window';
+  if (p <= 0) return 'immediate (Year 0)';
+  if (p < 1) {
+    const months = p * 12;
+    if (months < 1) {
+      const weeks = Math.max(1, Math.round(months * 4.33));
+      return weeks + ' week' + (weeks === 1 ? '' : 's');
+    }
+    return months.toFixed(1) + ' months';
+  }
+  return p.toFixed(1) + ' years';
 }
 
 const fmt0 = v => Math.round(v).toLocaleString('en-GB');
@@ -978,8 +1363,8 @@ function renderCatalogue() {
       const cost = getMeasureCost(m, idx);
       const qpt = getQtyPerTurb(m, idx);
       const nt = getNTurb(m, idx);
-      const capex = (cat === 'B.6') ? 0 : qpt * nt * cost;
-      const recurring = (cat === 'B.6') ? qpt * nt * (m.recPerUnit || 0) : 0;
+      const capex = qpt * nt * cost;
+      const recurring = qpt * nt * (m.recPerUnit || 0);
       catCapex += capex; catRec += recurring;
 
       const tr = document.createElement('tr');
@@ -996,15 +1381,15 @@ function renderCatalogue() {
         <td class="num"><input type="number" data-idx="${idx}" data-field="qtyPerTurb" value="${qpt}" step="any"></td>
         <td class="num"><input type="number" data-idx="${idx}" data-field="nTurb" value="${nt}" step="1"></td>
         <td class="num">${lockedCost ? `<span class="calc" style="display:inline-block;padding:3px 8px;border-radius:4px">£${fmt0(cost)}</span>` : `<input type="number" data-idx="${idx}" data-field="cost" value="${cost}" step="any">`}</td>
-        <td class="num calc">${cat === 'B.6' ? '-' : '£'+fmt0(capex)}</td>
-        <td class="num calc">${cat === 'B.6' ? '£'+fmt0(recurring)+'/yr' : '-'}</td>
+        <td class="num calc">${capex > 0 ? '£'+fmt0(capex) : '-'}</td>
+        <td class="num calc">${recurring > 0 ? '£'+fmt0(recurring)+'/yr' : '-'}</td>
       `;
       body.appendChild(tr);
     });
 
     const tot = document.createElement('tr');
     tot.className = 'total-row';
-    tot.innerHTML = `<td colspan="5" style="text-align:right">Subtotal ${cat}:</td><td class="num">${cat==='B.6' ? '-' : '£'+fmt0(catCapex)}</td><td class="num">${cat==='B.6' ? '£'+fmt0(catRec)+'/yr' : '-'}</td>`;
+    tot.innerHTML = `<td colspan="5" style="text-align:right">Subtotal ${cat}:</td><td class="num">${catCapex > 0 ? '£'+fmt0(catCapex) : '-'}</td><td class="num">${catRec > 0 ? '£'+fmt0(catRec)+'/yr' : '-'}</td>`;
     body.appendChild(tot);
 
     grandCapex += catCapex; grandRec += catRec;
@@ -1054,15 +1439,18 @@ function renderROI(r) {
   document.getElementById('r-opex').textContent = fmt1(r.annualOpexBaseline/1e6);
   document.getElementById('r-margin').textContent = fmt1(r.annualNetMargin/1e6);
   document.getElementById('r-npv').textContent = fmt0(r.npv/1e6);
-  document.getElementById('r-payback').textContent = r.payback === null ? 'never within the window' : (r.payback === 0 ? 'within Year 0' : `Year ${r.payback}`);
+  document.getElementById('r-payback').textContent = fmtPayback(r.payback);
 
   const ratio = r.npv / r.totalCapex;
+  const downtimeNote = state.downtimeMonths > 0
+    ? ` Year 0 also carries a ${state.downtimeMonths}-month generation gap during the repair campaign, which is already netted out of the cashflow above.`
+    : '';
   document.getElementById('r-interpretation').innerHTML = `
     The repair costs <strong>£${fmt2(r.totalCapex/1e6)}&nbsp;M</strong> upfront. After that, the farm runs for
     <strong>${state.life} more years</strong>, earning <strong>£${fmt1(r.annualNetMargin/1e6)}&nbsp;M each year</strong>
     in net margin after every operating cost. The NPV (total value in today's pounds) is
     <strong>£${fmt0(r.npv/1e6)}&nbsp;M</strong>, which is <strong>${ratio.toFixed(0)} times the upfront spend</strong>.
-    The investment pays back in <strong>${r.payback === 0 ? 'Year 0' : 'Year ' + r.payback}</strong>.
+    The investment pays back in <strong>${fmtPayback(r.payback)}</strong> against a status-quo (zero-revenue) counterfactual.${downtimeNote}
   `;
 }
 
@@ -1074,13 +1462,380 @@ function renderLCOE(r) {
   document.getElementById('bar-ours').textContent = '£' + fmt1(r.lcoe);
 }
 
+// Generic per-option ROI engine (handles construction gap for Option E, CF decline, OPEX multipliers, downtime)
+function computeOptionScenario(prof) {
+  const MW = 700;
+  const price = state.price;
+  const rate = state.rate;
+  const cf = state.cf;
+  const cfDec = prof.cfDecline || 0;          // %/yr
+  const opexMult = prof.opexMult !== undefined ? prof.opexMult : 1;
+  const gap = prof.constructionGap || 0;      // years of construction with no revenue
+  const dt = prof.downtime !== undefined ? prof.downtime : 0; // months
+  const uptimeY0 = Math.max(0, 1 - dt/12);
+  const annualOpex = (state.opexK + 8.6 + 83.4) * MW * 1000 * opexMult;
+  // CF decay starts from first operating year (i.e. t = gap + 1)
+  const firstOp = gap + 1;
+  const cfYear = (t) => (t < firstOp) ? cf : Math.max(0, cf * (1 - cfDec/100 * (t - firstOp)));
+  const aepYear = (t) => MW * cfYear(t) * 8760 / 1000;
+  const totalYears = gap + prof.life;
+
+  const years = [];
+  let cumNPV = 0;
+  for (let t = 0; t <= totalYears; t++) {
+    const df = 1 / Math.pow(1 + rate, t);
+    let rev = 0, opex = 0, capex = 0;
+    if (t === 0) {
+      capex = prof.capex;
+      if (gap === 0) {
+        // No construction gap: partial Y0 generation, full baseline OPEX
+        rev = aepYear(firstOp) * price * 1000 * uptimeY0;
+        opex = annualOpex;
+      }
+      // else: construction year — no revenue, OPEX assumed deferred until operating
+    } else if (t <= gap) {
+      // Still under construction — no rev, no OPEX
+    } else {
+      rev = aepYear(t) * price * 1000;
+      opex = annualOpex;
+    }
+    const netCF = rev - opex - capex;
+    const discCF = netCF * df;
+    cumNPV += discCF;
+    years.push({ t, rev, opex, capex, netCF, df, discCF, cumNPV });
+  }
+
+  // LCOE: discounted (CAPEX + OPEX) / discounted AEP
+  let discOpex = 0, discAEP = 0;
+  for (let t = 0; t <= totalYears; t++) {
+    const df = 1 / Math.pow(1 + rate, t);
+    if (t === 0 && gap === 0) {
+      discOpex += annualOpex * df;
+      discAEP += aepYear(firstOp) * uptimeY0 * df;
+    } else if (t > gap) {
+      discOpex += annualOpex * df;
+      discAEP += aepYear(t) * df;
+    }
+  }
+  const lcoe = discAEP > 0 ? (prof.capex + discOpex) / (discAEP * 1000) : Infinity;
+
+  // Payback
+  let payback = null;
+  if (years[0].cumNPV >= 0) payback = 0;
+  else {
+    for (let i = 1; i < years.length; i++) {
+      if (years[i].cumNPV >= 0 && years[i-1].cumNPV < 0) {
+        const prev = years[i-1].cumNPV;
+        const curr = years[i].cumNPV;
+        payback = (i - 1) + (-prev)/(curr - prev);
+        break;
+      }
+    }
+  }
+  return { id: prof.id, label: prof.label, scope: prof.scope, life: prof.life, gap, capex: prof.capex, npv: cumNPV, lcoe, payback };
+}
+
+function getOptionProfiles(rC) {
+  // Option D breakdown: 50 gearboxes @ £750k + 50 generators @ £400k + 50 transformers @ £200k
+  //                     + 150 blade refurb @ £150k + SCADA £5M + Option C scope
+  const optionDExtra = 50*750000 + 50*400000 + 50*200000 + 150*150000 + 5000000; // ≈ £90 M
+  const optionEDecom = 700 * 1000 * 400; // £400/kW decommissioning of existing
+  const optionECapex = 700 * 1000 * 3976 + optionEDecom; // new-build + decom
+  return [
+    { id:'A', label:'Do Nothing', life:1, capex:0, cfDecline:3.0, opexMult:1.0, downtime:0,
+      scope:'No intervention beyond statutory minimums. Defects accumulate; outage risk rises sharply.' },
+    { id:'B', label:'Essential Repairs', life:5, capex: computeOptionBCapex(), cfDecline:1.5, opexMult:1.0, downtime:0.5,
+      scope:'Monopile impact (CAN07) + secondary steel + CP renewal. No scour rectification; coating ageing continues.' },
+    { id:'C', label:'Structural Life Extension ★', life: state.life, capex: rC.totalCapex, cfDecline: state.cfDeclinePct, opexMult:1.0, downtime: state.downtimeMonths, recommended:true,
+      scope:'Option B + scour rectification + coating renewal + critical structural element refurbishment.' },
+    { id:'D', label:'Full Life Extension', life:17, capex: rC.totalCapex + optionDExtra, cfDecline:0.25, opexMult:0.90, downtime:3,
+      scope:'Option C + gearbox/generator/transformer replacement + blade refurb + SCADA modernisation.',
+      extraDetail: optionDExtra },
+    { id:'E', label:'New Wind Farm', life:27, capex: optionECapex, cfDecline:0.0, opexMult:0.85, downtime:0, constructionGap:3,
+      scope:'Full decommissioning of existing + new build at £3,976/kW (Arup Table 21) + ~£400/kW decom, with 3-yr construction-revenue gap.' },
+  ];
+}
+
+// Cut-off criteria pass/fail per Report §13.1
+const cutoffCriteria = [
+  { key:'defects',     label:'Defects repairable' },
+  { key:'scour',       label:'Foundation scour rectified' },
+  { key:'components',  label:'Components replaceable' },
+  { key:'cheaper',     label:'Cheaper than replacement' },
+  { key:'lifeGain',    label:'Gains >10 yrs' },
+];
+const cutoffResults = {
+  A: { defects:false, scour:false, components:false, cheaper:true,  lifeGain:false },
+  B: { defects:true,  scour:false, components:true,  cheaper:true,  lifeGain:false },
+  C: { defects:true,  scour:true,  components:true,  cheaper:true,  lifeGain:true  },
+  D: { defects:true,  scour:true,  components:true,  cheaper:false, lifeGain:true  }, // approaches replacement
+  E: { defects:null,  scour:true,  components:null,  cheaper:false, lifeGain:true  },
+};
+
+function renderOptions(r) {
+  const profiles = getOptionProfiles(r);
+  const results = profiles.map(p => ({ prof:p, res: computeOptionScenario(p) }));
+
+  // ---- Main comparison table ----
+  const tbody = document.getElementById('opt-tbody');
+  tbody.innerHTML = '';
+  results.forEach(({prof, res}) => {
+    const tr = document.createElement('tr');
+    if (prof.recommended) tr.className = 'opt-recommended';
+    const npvDisplay = res.npv < 0 ? '<span style="color:var(--warm)">−£' + fmt0(Math.abs(res.npv)/1e6) + ' M</span>' : '£' + fmt0(res.npv/1e6) + ' M';
+    const lcoeDisplay = isFinite(res.lcoe) ? '£' + fmt2(res.lcoe) : '—';
+    const capexDisplay = res.capex === 0 ? '£0' : '£' + (res.capex >= 1e9 ? fmt2(res.capex/1e9) + ' B' : fmt0(res.capex/1e6) + ' M');
+    tr.innerHTML = `
+      <td><strong>${prof.id}</strong><small>${prof.label.replace(' ★','')}</small></td>
+      <td style="font-size:13px;color:var(--ink-soft)">${prof.scope}</td>
+      <td style="white-space:nowrap">${prof.life} yr${prof.constructionGap ? ' <small>(+'+prof.constructionGap+' build)</small>' : ''}</td>
+      <td class="num">${capexDisplay}</td>
+      <td class="num">${npvDisplay}</td>
+      <td class="num">${lcoeDisplay}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // ---- Cut-off criteria grid ----
+  const cTbody = document.getElementById('cutoff-tbody');
+  if (cTbody) {
+    cTbody.innerHTML = '';
+    profiles.forEach(prof => {
+      const tr = document.createElement('tr');
+      if (prof.recommended) tr.className = 'opt-recommended';
+      const r = cutoffResults[prof.id] || {};
+      let passCount = 0, totalCount = 0;
+      const cells = cutoffCriteria.map(c => {
+        const v = r[c.key];
+        if (v === true)  { passCount++; totalCount++; return '<td class="num" style="color:var(--success);font-size:18px">✓</td>'; }
+        if (v === false) { totalCount++; return '<td class="num" style="color:var(--warm);font-size:18px">✗</td>'; }
+        return '<td class="num" style="color:var(--muted);font-size:14px">n/a</td>';
+      }).join('');
+      tr.innerHTML = `<td><strong>${prof.id}</strong> <small style="color:var(--ink-soft)">${prof.label.replace(' ★','')}</small></td>${cells}<td class="num"><strong>${passCount}/${totalCount}</strong></td>`;
+      cTbody.appendChild(tr);
+    });
+  }
+
+  // ---- Option D extra-spend disclosure ----
+  const optD = profiles.find(p => p.id === 'D');
+  const dExtra = document.getElementById('opt-d-extra');
+  if (dExtra && optD) dExtra.textContent = '£' + fmt0(optD.extraDetail/1e6) + ' M';
+}
+
+function renderCarbon(r) {
+  // Indicative: 700 MW × 700 kg CO2e/kW = 490,000 t for new build
+  const eAvoided = 700 * 1000 * 0.7; // tonnes CO2e
+  // Option C repair carbon (very rough): steel + cement (for grout) + transport + epoxy
+  // Conservative ~1,500 t (mainly scour rock transport + new steel parts)
+  const cC = 1500;
+  const net = eAvoided - cC;
+  document.getElementById('carb-avoided').textContent = (Math.round(net/1000)*1000).toLocaleString('en-GB');
+  document.getElementById('carb-c').textContent = cC.toLocaleString('en-GB');
+  // Average UK car ~ 2.0 tCO2/yr × 10 yrs = 20 tCO2 per car
+  document.getElementById('carb-cars').textContent = Math.round(net / 20).toLocaleString('en-GB');
+}
+
+// Material Take-Off — physical materials only (excludes labour/vessel-time lines)
+// qty is whole-farm total. mass is kg per unit. Sources cited inline.
+const mtoItems = [
+  { cat:'B.1', name:'Bolted clamp assembly (CAN07)', qty:1,      unit:'set',    massPerUnit:850,   src:'Vessel Impact.docx; one clamp set, divers install' },
+  { cat:'B.1', name:'ICCP anode supplement',          qty:100,    unit:'anode',  massPerUnit:25,    src:'2 anodes × 50 turbines, splash zone' },
+  { cat:'B.1', name:'FBG strain-monitoring sensors',   qty:50,    unit:'set',    massPerUnit:3,     src:'Fibre-Bragg + acoustic emission packs' },
+  { cat:'B.2', name:'Anchor points (fall-arrest)',     qty:100,   unit:'unit',   massPerUnit:5,     src:'2/turbine × 50; stainless steel, GWO compliant' },
+  { cat:'B.2', name:'Aviation LED light units',        qty:100,   unit:'unit',   massPerUnit:2,     src:'ICAO LED, IP67' },
+  { cat:'B.2', name:'Marine navigation lights (ATEX)', qty:50,    unit:'unit',   massPerUnit:5,     src:'ATEX-rated, solar-assisted' },
+  { cat:'B.2', name:'GRP grating panels',              qty:50,    unit:'panel',  massPerUnit:10,    src:'Damage Index xlsx; standard panel size' },
+  { cat:'B.3', name:'Boat-landing fender — chosen repair part', qty:50, unit:'set', massPerUnit:120, src:'CHS 419×36 partial section repair, varies by option' },
+  { cat:'B.4', name:'ICCP anode replacement (end of 30-yr life)', qty:50, unit:'anode set', massPerUnit:40, src:'Whole-farm replacement, ROV install' },
+  { cat:'B.4', name:'Epoxy coating system (consumables)', qty:50, unit:'kit',    massPerUnit:60,    src:'Splash-zone + intermediate platform spot repairs' },
+  { cat:'B.5', name:'Armour rock (d₅₀ = 0.14 m)',      qty:41160, unit:'t',      massPerUnit:1,     src:'Report §10.4: 823 t/pile × 50, ρ_rock 2,350 kg/m³, Findon quarry nr Aberdeen' },
+  { cat:'B.5', name:'Filter rock (d₅₀ = 0.07 m)',      qty:20580, unit:'t',      massPerUnit:1,     src:'Report §10.4: 412 t/pile × 50, Findon quarry' },
+  { cat:'B.5', name:'Sand for scour-hole refill',      qty:90597, unit:'t',      massPerUnit:1,     src:'Report §10.1: 1,812 t/pile × 50; dredged borrow area, ρ_sand 1,500 kg/m³' },
+];
+
+function renderMTO() {
+  const body = document.getElementById('mto-body');
+  body.innerHTML = '';
+  const byCat = {};
+  mtoItems.forEach(m => { (byCat[m.cat] = byCat[m.cat] || []).push(m); });
+  let grandMassKg = 0;
+  Object.keys(catLabels).forEach(cat => {
+    if (!byCat[cat]) return;
+    const hdr = document.createElement('tr');
+    hdr.className = 'mto-cat-row';
+    hdr.innerHTML = `<td colspan="6">${catLabels[cat]}</td>`;
+    body.appendChild(hdr);
+    byCat[cat].forEach(m => {
+      // For items where qty is already a mass (unit 't' or 'kt'), the total mass = qty in source units.
+      // For discrete-item rows, qty is a count and massPerUnit is kg per item.
+      let massKg;
+      if (m.unit === 't') massKg = m.qty * 1000;
+      else if (m.unit === 'kt') massKg = m.qty * 1e6;
+      else massKg = m.qty * (m.massPerUnit || 0);
+      grandMassKg += massKg;
+      const massDisplay = massKg >= 1e6 ? (massKg/1e6).toFixed(1) + ' kt' : massKg >= 1e3 ? (massKg/1e3).toFixed(1) + ' t' : massKg.toFixed(0) + ' kg';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${m.cat}</td>
+        <td>${m.name}</td>
+        <td class="num">${m.qty.toLocaleString('en-GB')}</td>
+        <td>${m.unit}</td>
+        <td class="num">${massDisplay}</td>
+        <td style="font-size:12px;color:var(--muted)">${m.src}</td>
+      `;
+      body.appendChild(tr);
+    });
+  });
+  const totDisplay = grandMassKg >= 1e6 ? (grandMassKg/1e6).toFixed(1) + ' kt' : (grandMassKg/1e3).toFixed(1) + ' t';
+  document.getElementById('mto-total-mass').textContent = totDisplay;
+}
+
+function renderScenarioStamp(r) {
+  const el = document.getElementById('scenario-stamp');
+  const chips = [
+    `<span class="chip">Scenario:</span>`,
+    `<span class="chip">life=<strong>${state.life} yr</strong></span>`,
+    `<span class="chip">downtime=<strong>${state.downtimeMonths} mo</strong></span>`,
+    `<span class="chip">price=<strong>£${state.price}/MWh</strong></span>`,
+    `<span class="chip">CF=<strong>${(state.cf*100).toFixed(1)}%</strong> (−${state.cfDeclinePct.toFixed(1)}%/yr)</span>`,
+    `<span class="chip">O&amp;M=<strong>£${state.opexK}k/MW/yr</strong></span>`,
+    `<span class="chip">discount=<strong>${(state.rate*100).toFixed(1)}%</strong></span>`,
+    `<span class="chip">CAN07=<strong>${viOptionLabels[state.viOption]}</strong></span>`,
+    `<span class="chip">fender=<strong>${blOptionLabels[state.blOption]}</strong></span>`,
+    `<span class="chip">CAPEX=<strong>£${fmt2(r.totalCapex/1e6)}M</strong></span>`,
+    `<span class="chip">NPV=<strong>£${fmt0(r.npv/1e6)}M</strong></span>`,
+    `<span class="chip">LCOE=<strong>£${fmt2(r.lcoe)}/MWh</strong></span>`,
+    `<span class="chip ${state.life > 10 ? 'flag' : ''}">${state.life > 10 ? '⚠ requires extra DNV-ST-0262 justification' : 'within Option C envelope'}</span>`,
+  ];
+  el.innerHTML = chips.join('');
+
+  // Also update ROI tab question
+  const q = document.getElementById('roi-q-capex');
+  if (q) q.textContent = fmt2(r.totalCapex/1e6);
+}
+
+function csvEscape(s) {
+  s = (s == null) ? '' : String(s);
+  if (/[",\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function triggerDownload(filename, text) {
+  const blob = new Blob([text], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+}
+
+function exportCSV(which) {
+  const ts = new Date().toISOString().slice(0,10);
+  const r = computeROI();
+  if (which === 'catalogue') {
+    const rows = [['Cat','Measure','Qty per turbine','# turbines','£ / unit','£ CAPEX','£/yr recurring','Status','Source']];
+    measures.forEach((m, idx) => {
+      const cost = getMeasureCost(m, idx);
+      const qpt = getQtyPerTurb(m, idx);
+      const nt = getNTurb(m, idx);
+      const capex = qpt * nt * cost;
+      const recurring = qpt * nt * (m.recPerUnit || 0);
+      rows.push([m.cat, m.name, qpt, nt, cost, capex || '', recurring || '', m.status, m.src]);
+    });
+    rows.push([]);
+    rows.push(['Scenario:', '', '', '', '', '', '', '', '']);
+    rows.push(['Life extension', state.life + ' yr', 'Downtime Y0', state.downtimeMonths + ' mo', 'Price', state.price + ' £/MWh', 'CF', state.cf, 'Discount', state.rate]);
+    rows.push(['Total CAPEX', r.totalCapex.toFixed(0), 'NPV', r.npv.toFixed(0), 'LCOE', r.lcoe.toFixed(2), 'Payback', fmtPayback(r.payback)]);
+    const csv = rows.map(r2 => r2.map(csvEscape).join(',')).join('\n');
+    triggerDownload(`ACCRAR_catalogue_${ts}.csv`, csv);
+  } else if (which === 'roi') {
+    const rows = [['Year','Revenue (£)','Baseline OPEX (£)','OPEX uplift (£)','CAPEX (£)','Net cashflow (£)','Discount factor','Discounted CF (£)','Cumulative NPV (£)']];
+    r.years.forEach(y => {
+      rows.push([y.t, y.rev.toFixed(0), y.base.toFixed(0), y.uplift.toFixed(0), y.capex.toFixed(0), y.netCF.toFixed(0), y.df.toFixed(4), y.discCF.toFixed(0), y.cumNPV.toFixed(0)]);
+    });
+    rows.push([]);
+    rows.push(['Total NPV', r.npv.toFixed(0)]);
+    rows.push(['Payback', fmtPayback(r.payback)]);
+    rows.push(['LCOE (£/MWh)', r.lcoe.toFixed(2)]);
+    const csv = rows.map(r2 => r2.map(csvEscape).join(',')).join('\n');
+    triggerDownload(`ACCRAR_roi_${ts}.csv`, csv);
+  } else if (which === 'mto') {
+    const rows = [['Cat','Material / item','Total quantity','Unit','Mass per unit (kg)','Total mass (kg)','Source / notes']];
+    mtoItems.forEach(m => {
+      rows.push([m.cat, m.name, m.qty, m.unit, m.massPerUnit, m.qty * m.massPerUnit, m.src]);
+    });
+    const csv = rows.map(r2 => r2.map(csvEscape).join(',')).join('\n');
+    triggerDownload(`ACCRAR_MTO_${ts}.csv`, csv);
+  }
+}
+
+function renderSensitivity(r) {
+  const baseNPV = r.npv;
+  // Each variable: label, base value, low (-20%), high (+20%), units, hint
+  // For CAPEX, the convention is favourable=lower, unfavourable=higher (flip colours)
+  const vars = [
+    { key:'price',     label:'Electricity price',  hint:'£/MWh',                 base: state.price,  low: state.price * 0.8,  high: state.price * 1.2,  isCapex:false },
+    { key:'cf',        label:'Capacity factor',    hint:'fraction',              base: state.cf,     low: state.cf * 0.8,     high: Math.min(0.65, state.cf * 1.2), isCapex:false },
+    { key:'opexK',     label:'Baseline O&M',       hint:'k£/MW/yr',              base: state.opexK,  low: state.opexK * 0.8,  high: state.opexK * 1.2,  isCapex:true /*lower OPEX is better*/ },
+    { key:'rate',      label:'Discount rate',      hint:'%',                     base: state.rate,   low: state.rate * 0.8,   high: state.rate * 1.2,   isCapex:true /*lower rate is better*/ },
+    { key:'capexMult', label:'Total repair CAPEX', hint:'multiplier on catalogue', base: 1,          low: 0.8,                high: 1.2,                isCapex:true /*lower CAPEX is better*/ },
+  ];
+
+  // First pass: compute NPVs for each var × {low, high}, find the absolute max deviation for scaling
+  const results = vars.map(v => {
+    const lowNPV  = computeROI({ [v.key]: v.low  }).npv;
+    const highNPV = computeROI({ [v.key]: v.high }).npv;
+    return { ...v, lowNPV, highNPV };
+  });
+  const maxDev = Math.max(1, ...results.flatMap(r2 => [Math.abs(r2.lowNPV - baseNPV), Math.abs(r2.highNPV - baseNPV)]));
+
+  // Sort by total swing (most influential first)
+  results.sort((a, b) => Math.abs(b.highNPV - b.lowNPV) - Math.abs(a.highNPV - a.lowNPV));
+
+  const body = document.getElementById('tornado-body');
+  body.innerHTML = '';
+  results.forEach(v => {
+    const lowDev  = v.lowNPV  - baseNPV;   // typically negative for favourable=high vars
+    const highDev = v.highNPV - baseNPV;
+    // Determine which side each goes on (favourable side = green = right, unfavourable = red = left)
+    let leftDev, rightDev;
+    if (v.isCapex) {
+      // higher value is unfavourable → its NPV change goes to the LEFT
+      leftDev  = highDev; // +20% → red side
+      rightDev = lowDev;  // -20% → green side
+    } else {
+      leftDev  = lowDev;  // -20% → red side
+      rightDev = highDev; // +20% → green side
+    }
+    const leftPct  = Math.min(50, Math.abs(leftDev)  / maxDev * 50);
+    const rightPct = Math.min(50, Math.abs(rightDev) / maxDev * 50);
+
+    const lowStr = (v.key === 'rate' || v.key === 'cf') ? (v.low*100).toFixed(1) : (v.key === 'capexMult' ? (v.low.toFixed(2)+'×') : v.low.toFixed(1));
+    const highStr = (v.key === 'rate' || v.key === 'cf') ? (v.high*100).toFixed(1) : (v.key === 'capexMult' ? (v.high.toFixed(2)+'×') : v.high.toFixed(1));
+
+    const row = document.createElement('div');
+    row.className = 'tornado-row';
+    row.innerHTML = `
+      <div class="lbl">${v.label}<small>${lowStr} ↔ ${highStr} ${v.hint}</small></div>
+      <div class="bar-wrap">
+        <div class="axis"></div>
+        <div class="bar-low"  style="width:${leftPct}%"></div>
+        <div class="bar-high" style="width:${rightPct}%; left:${50}%"></div>
+      </div>
+      <div class="range">NPV range<br>£${fmt0(Math.min(v.lowNPV, v.highNPV)/1e6)}–${fmt0(Math.max(v.lowNPV, v.highNPV)/1e6)} M</div>
+    `;
+    body.appendChild(row);
+  });
+  document.getElementById('sens-base').textContent = fmt0(baseNPV/1e6);
+}
+
 function renderBottomLine(r) {
   document.getElementById('bl-capex').textContent = fmt2(r.totalCapex/1e6);
   document.getElementById('bl-capex-kw').textContent = fmt2(r.totalCapex / 700 / 1000);
   const pct = r.totalCapex / 700 / 1000 / 3976 * 100;
   document.getElementById('bl-pct').textContent = pct.toFixed(2);
-  document.getElementById('bl-payback').textContent = r.payback === null ? 'never within window' : (r.payback === 0 ? 'less than 1 year' : `${r.payback} year${r.payback>1?'s':''}`);
-  document.getElementById('bl-payback2').textContent = r.payback === null ? '...' : (r.payback === 0 ? 'under a year' : `about ${r.payback} year${r.payback>1?'s':''}`);
+  document.getElementById('bl-payback').textContent = fmtPayback(r.payback);
+  document.getElementById('bl-payback2').textContent = r.payback === null ? '...' : (r.payback < 1 ? 'less than a year' : 'about ' + fmtPayback(r.payback));
   document.getElementById('bl-lcoe').textContent = fmt2(r.lcoe);
   const ratio = 88.5 / r.lcoe;
   document.getElementById('bl-lcoe-ratio').textContent = ratio.toFixed(1);
@@ -1131,9 +1886,13 @@ function renderNarrative(r) {
       ICCP anode replacement (the 30-year design life is up), a full boat-landing fender recoat
       (the splash-zone allowance is exceeded at 10.3 mm measured), and localised spot repairs.</li>
       <li><strong>Scour protection refill: £${fmt2(capexByCat['B.5']/1e6)}&nbsp;M.</strong>
-      41,160 t of armour rock and 20,580 t of filter rock from Findon quarry, hauled via Inverness in
-      34 train loads. Placement uses 16 rock-laying vessel transits, with 13 dredger transits for the
-      sand to refill the 4 m scour holes. Quantities come from Sophie and Manon's scour design.</li>
+      41,160 t of armour rock and 20,580 t of filter rock from Findon quarry near Aberdeen, hauled by rail to
+      Inverness in <strong>33 train rotations</strong> (Touax 25-wagon × 77 t aggregate trains, Report §10.5).
+      Placement uses the <strong>Adhémar de Saint-Venant</strong> (or equivalent fall-pipe vessel) over 16 rotations
+      of 10h30 each, with two vessels in parallel — one loading at Inverness while the other installs offshore.
+      Sand to refill the 4 m scour holes is dredged from Scottish coastal borrow areas by a <strong>Damen
+      TSHD 4000 Multi-Purpose</strong> over 13 rotations of ~11 h each. Quantities from Sophie and Manon's scour
+      design (Report §10).</li>
       <li><strong>Recurring inspection (Category B.6): £${fmt0(r.recurring/1e3)}&nbsp;k each year.</strong>
       Annual coating walk-overs, detailed splash-zone inspections every 2 to 3 years, 5-yearly ROV ICCP checks,
       and post-storm bathymetric surveys, all per Manon's inspection plan.</li>
@@ -1149,9 +1908,11 @@ function renderNarrative(r) {
     <strong>£${fmt0(r.annualUplift/1e3)}&nbsp;k each year</strong>, the net margin is
     <strong>£${fmt1(r.annualNetMargin/1e6)}&nbsp;M each year</strong>.</p>
     <p>Discounted at 6.2% (Arup hurdle rate), the project NPV is <strong>£${fmt0(r.npv/1e6)}&nbsp;M</strong>,
-    with payback in <strong>${r.payback === 0 ? 'Year 0 itself' : 'Year ' + r.payback}</strong>.
+    with payback in <strong>${fmtPayback(r.payback)}</strong> against a status-quo (zero-revenue) counterfactual.
     NPV comes out at <strong>${(r.npv/r.totalCapex).toFixed(0)} times the upfront spend</strong>, a clear positive
-    benefit-cost ratio.</p>
+    benefit-cost ratio. The Year-0 cashflow already deducts <strong>${state.downtimeMonths} months</strong> of
+    lost generation during the repair campaign, per the maintenance and scour storyboards
+    (July–October weather window per the Secondary Steel Repair Timeline Notes).</p>
 
     <h3>9.3 Economic outlook for the increased lifespan</h3>
     <p>The life-extension LCOE is <strong>£${fmt2(r.lcoe)} per MWh</strong>, compared with new-build offshore-wind
@@ -1195,17 +1956,46 @@ function refresh() {
   state.rate = +document.getElementById('i-rate').value;
   state.viOption = document.getElementById('i-vi-option').value;
   state.blOption = document.getElementById('i-bl-option').value;
+  state.downtimeMonths = +document.getElementById('i-downtime').value;
+  state.cfDeclinePct = +document.getElementById('i-cfdecline').value;
 
   document.getElementById('v-life').textContent = state.life;
   document.getElementById('v-cf').textContent = (state.cf*100).toFixed(1);
   document.getElementById('v-rate').textContent = (state.rate*100).toFixed(1);
+  document.getElementById('v-downtime').textContent = state.downtimeMonths;
+  document.getElementById('v-cfdecline').textContent = state.cfDeclinePct.toFixed(1);
 
+  const lifeHint = document.getElementById('life-hint');
+  if (state.life > 10) {
+    lifeHint.style.color = 'var(--warm)';
+    lifeHint.innerHTML = '⚠ Beyond 10 yrs requires explicit DNVGL-ST-0262 residual-life justification: weld FLS, NFA shift, ICCP renewal interval, and machinery condition. Rambøll Meeting 3: <em>"currently cannot go for 15 years extra"</em> on welds alone.';
+  } else {
+    lifeHint.style.color = '';
+    lifeHint.innerHTML = 'Report §13.2 picks <strong>Option C</strong> (10–15 yrs achievable). Per DNVGL-ST-0262, beyond 10 yrs check weld FLS residual, NFA shift, and ICCP renewal interval.';
+  }
+
+  updateRangeFills();
   renderCatalogue();
   const r = computeROI();
   renderROI(r);
   renderLCOE(r);
   renderBottomLine(r);
   renderNarrative(r);
+  renderOptions(r);
+  renderCarbon(r);
+  renderSensitivity(r);
+  renderMTO();
+  renderScenarioStamp(r);
+}
+
+function updateRangeFills() {
+  document.querySelectorAll('aside.scenario input[type=range]').forEach(r => {
+    const min = parseFloat(r.min) || 0;
+    const max = parseFloat(r.max) || 100;
+    const val = parseFloat(r.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    r.style.setProperty('--pct', pct + '%');
+  });
 }
 
 document.querySelectorAll('aside.scenario input, aside.scenario select').forEach(el => {
